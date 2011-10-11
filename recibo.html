@@ -8,7 +8,7 @@
 <body>
 	<div class="topbar-inner" style="{padding:3px;}">
 		<a class="btn success" href="#">RECIBO</a>
-		<a class="btn success" href="#">Button 1</a>
+		<a class="btn success" href="#">REMISION</a>
 		<a class="btn success" href="#">Button 2</a>
 		<a class="btn success" href="#">Button 3</a>
 	</div>
@@ -16,37 +16,47 @@
 
 	<!-- Start Overall Container -->
 	<div class="container span18">
-		
-		<div id="top-row" class="row span18 well">
-			<div id="row">
-				<div class="span12">
+	<div id="logo-row" class="row span18">
+		<div class="span3">
+			<img src="compcom_logo.png"/>
+		</div>
+		<div id="address" class="span12">
+			<ul style="list-style-type:none; text-align:center;">			
+				<li><strong>COOPERATIVA MULTISECTORIAL DE PRODUCTORES DE CAFE ORGANICO DE MATAGALPA</strong></li>
+				<li>Biblioteca del Banco Central 3 C. Este 20 Mts al Sur.   TEL: 2772 3486</li>
+				<li>&nbsp</li>
+				<li><strong>RECIBO DE CAFE ORGANICO 2011/2012</strong></li>
+				
+		</div>
+	</div>
+	
+	
+	<div id="top-row" class="row span18">
+			<div id="row" style="margin-top:5px; margin-bottom 5px;">
+				<div class="span15">
 					<span class="label">INFORMACION DE PRODUCTOR</span>
 				</div>
-				<div class="span5">
+				<div class="span2">
 					FOLIO&deg;: <span id="transaction_folio" class="label notice" style="font-size:15px;">1234</span>
 				</div>
 			</div>
 			<div id="producer-left" class="well span8">
 				<form>
 					<fieldset>
-						<div class="clearfix">
-							<label for="producer_name">PRODUCTOR</label>
-							<div class="input">
-								<input class="xlarge" id="producer" name="producer" size="30" type="text">
-							</div>
+						<label for="producer_name">PRODUCTOR</label>
+						<div class="input">
+							<input class="xlarge" id="producer" name="producer" size="30" type="text">
 						</div>
-						<div class="clearfix">
-							<label for="producer_id">CODIGO</label>
-							<div class="input">
-								<input class="xlarge" id="producer_id" name="producer_id" size="30" type="text">
-							</div>		
-						</div>
-						<div class="clearfix">
-							<label for="transaction_date">FECHA</label>
-							<div class="input">
-								<input class="xlarge" id="transaction_date" name="transaction_date" size="30" type="text">
-							</div>		
-						</div>
+						
+						<label for="producer_id">CODIGO</label>
+						<div class="input">
+							<input class="xlarge" id="producer_id" name="producer_id" size="30" type="text">
+						</div>		
+					
+						<label for="transaction_date">FECHA</label>
+						<div class="input">
+							<input class="xlarge" id="transaction_date" name="transaction_date" size="30" type="text">
+						</div>		
 					</fieldset>
 				</form>
 			</div><!-- producer-left -->
@@ -54,30 +64,28 @@
 			<div id="producer-right"class="well span8">
 				<form>
 					<fieldset>
-						<div class="clearfix">
-							<label for="producer_name">COMITE</label>
-							<div class="input">
-								<input class="xlarge" id="producer" name="producer" size="30" type="text">
-							</div>
+						
+						<label for="producer_name">COMITE</label>
+						<div class="input">
+							<input class="xlarge" id="producer" name="producer" size="30" type="text">
 						</div>
-						<div class="clearfix">
-							<label for="producer_id" >CENTRO DE ACOPIO</label>
-							<div class="input">
-								<input class="xlarge" id="producer_id" name="producer_id" size="30" type="text">
-							</div>		
-						</div>
-						<div class="clearfix">
-							<label for="transaction_date">HORA DE ENTREGA</label>
-							<div class="input">
-								<input class="xlarge" id="transaction_date" name="transaction_date" size="30" type="text">
-							</div>		
-						</div>
+										
+						<label for="producer_id" >CENTRO DE ACOPIO</label>
+						<div class="input">
+							<input class="xlarge" id="producer_id" name="producer_id" size="30" type="text">
+						</div>		
+						
+						<label for="transaction_date">HORA DE ENTREGA</label>
+						<div class="input">
+							<input class="xlarge" id="transaction_date" name="transaction_date" size="30" type="text">
+						</div>		
+						
 					</fieldset>
 				</form>
 			</div><!-- producer-right -->
 		</div> <!-- top-row -->
 		
-		<div id="middle-row" class="row span18 well">
+		<div id="middle-row" class="row span18">
 			<div id="weight-and-price" class="well span5">
 				<span class="label">PESO Y PRECIO</span>
 				<form>
@@ -165,15 +173,15 @@
 			</div><!-- observations -->
 		</div> <!-- middle-row -->
 		
-		<div id="bottom-row" class="row span18 well">
-			<div id="signature" class="well span12">
+		<div id="bottom-row" class="row span18">
+			<div id="signature" class="well span15">
 				<div id="sign" class="input large span-two-thirds">
 					<label for="sign-here" style="width:150px;">ENTREGUE CONFIRME</label>
 					<input id="sign-here" class="xlarge span8" style="border-bottom-color: black;">
 				</div>
-			</div>
-			<div id="actions" class="span3">
-				<button name="submit" class="btn large success" type="reset">SUBMIT</button>
+				<div id="actions" class="span3">
+					<button name="submit" class="btn large success" type="reset">SUBMIT</button>
+				</div>
 			</div>
 		</div> <!-- bottom-row -->
 		
