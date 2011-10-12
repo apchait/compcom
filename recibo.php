@@ -6,12 +6,7 @@
 </head>
 
 <body>
-	<div class="topbar-inner" style="{padding:3px;}">
-		<a class="btn success" href="#">RECIBO</a>
-		<a class="btn success" href="#">REMISION</a>
-		<a class="btn success" href="#">Button 2</a>
-		<a class="btn success" href="#">Button 3</a>
-	</div>
+	<?php include("header.php")?>
 
 
 	<!-- Start Overall Container -->
