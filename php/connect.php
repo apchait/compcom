@@ -13,6 +13,9 @@ function connectToDb(){
 	return $link;
 }
 
+$a = connectToDb();
+echo $a;
+
 function runQuery($link, $query){
 	$result = mysql_query($query,$link) or die('Error: ' . mysql_error());
 	return $result;
