@@ -13,6 +13,8 @@ function connectToDb(){
 	return $link;
 }
 
+echo "Hello";
+echo "<br>";
 $a = connectToDb();
 echo $a;
 
