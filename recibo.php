@@ -9,6 +9,12 @@
 	
 	<script>
 		$(document).ready(function(){
+		
+			// Producer hash has 3 arrays codeToId, nameToId, and idToAll
+			// You can use any producer name or code to get the database id, then use that id to get the rest of the producer's information
+			var producer_hash = [];
+			var name_keys = [];
+			var code_keys = [];
 			
 			function fillInForProducer(mode,val){
 				var id;
@@ -28,12 +34,6 @@
 			//$('#datepicker').datepicker({ defaultDate: +0 });
 			
 			// Set a list of names for autocomplete
-			// Producer hash has 3 arrays codeToId, nameToId, and idToAll
-			// You can use any producer name or code to get the database id, then use that id to get the rest of the producer's information
-			console.log('data');
-			var producer_hash = [];
-			var name_keys = [];
-			var code_keys = [];
 			$.getJSON("./php/getList.php",function(data){
 				console.log(data);
 				// Get the names (keys of the array)
