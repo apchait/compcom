@@ -2,6 +2,8 @@
 function connectToDb(){
 	// This will check if the url is on the server or local and select the appropriate database
 	$url = (!empty($_SERVER['HTTPS'])) ? "https://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'] : "http://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+	echo $url;
+	echo "<br>";
 	if ($url == "http://people.ischool.berkeley.edu/~ariel/acopio/compcom/php/connect.php"){
 		$link = mysql_connect('', 'ariel', 'ajones') or die('Could not connect: ' . mysql_error()); 
 		mysql_select_db('ariel') or die ('Could not select: ' . mysql_error());
