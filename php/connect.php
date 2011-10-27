@@ -5,8 +5,8 @@ function connectToDb(){
 	$onIschool = substr_count($url, "ischool");
 	if ($onIschool){
 		echo "On Ischool <br>";
-		$link = mysql_connect('', 'ariel', 'ajones') or die('Could not connect: ' . mysql_error()); 
-		mysql_select_db('ariel') or die ('Could not select: ' . mysql_error());
+		$link = mysql_connect('', 'acopio', 'w349jd') or die('Could not connect: ' . mysql_error()); 
+		mysql_select_db('acopio') or die ('Could not select: ' . mysql_error());
 	}
 	else{
 		$link = mysql_connect('localhost', 'root', 'root') or die('Could not connect: ' . mysql_error()); 
