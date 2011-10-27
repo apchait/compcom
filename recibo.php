@@ -6,6 +6,7 @@
 		include('./php/connect.php');
 		links();
 	?>
+	<script src="./js/jquery.ui.datepicker-es.js"></script>
 	
 	<script>
 		$(document).ready(function(){
@@ -16,7 +17,13 @@
 			var name_keys = [];
 			var code_keys = [];
 			
+			// Set the datepicker and current date
+			$('#tr_date').datepicker({ defaultDate: +7 });
+			$('#tr_date').datepicker($.datepicker.regional['es']);
+			$('#tr_date').datepicker('setDate', "+0");
+			
 			function fillInForProducer(mode,val){
+				// Use the name or the code to get the database id
 				var id;
 				if (mode == "name"){
 					id = producer_hash['nameToId'][val];
@@ -24,18 +31,32 @@
 				else if (mode == "code"){
 					id = producer_hash['codeToId'][val];
 				}
+				console.log(producer_hash, val);
+				console.log(id);
+				// Get all the data for that producer
 				data = producer_hash['idToAll'][id];
 				console.log(data);
+				// Set the values of the different html fields to that producer
+				if (data){
+					$("#pr_name").val(data["pr_name"]);
+					$("#pr_code").val(data["pr_code"]);
+					$("#pr_community").val(data["pr_community"]);
+				}
+				else{
+					// Account for names and codes not in the database
+					if (mode == 'name'){
+						$("#pr_code").val('');
+						$("#pr_community").val('');
+					}
+					else if(mode == 'code'){
+						$("#pr_name").val('');
+						$("#pr_community").val('');
+					}
+				}
 			}
-
-			// Set up the datepicker
-			// Try to set up in spanish
-			//$('#datepicker').datepicker($.datepicker.regional['fr']);
-			//$('#datepicker').datepicker({ defaultDate: +0 });
-			
+				
 			// Set a list of names for autocomplete
 			$.getJSON("./php/getList.php",function(data){
-				console.log(data);
 				// Get the names (keys of the array)
 				producer_hash = data;
 				$.each(data["nameToId"], function(i, v){
@@ -46,16 +67,20 @@
 				});
 				$( "#pr_name" ).autocomplete({
 					source: name_keys,
-					select: function(event, ui) {
+					close: function(event, ui) {
 						fillInForProducer('name', $('#pr_name').val());
 					}
 				});
 				$( "#pr_code" ).autocomplete({
 					source: code_keys,
-					select: function(event, ui) {
+					close: function(event, ui) {
 						fillInForProducer('code', $('#pr_code').val());
 					}
 				});
+			});
+			
+			$( "#pr_code" ).change(function(event, ui) {
+				fillInForProducer('code', $('#pr_code').val());
 			});
 			
 		});
@@ -96,19 +121,19 @@
 			<div id="producer-left" class="well span8">
 				<form>
 					<fieldset>
-						<label for="producer_name">PRODUCTOR</label>
+						<label for="">PRODUCTOR</label>
 						<div class="input">
-							<input class="xlarge" id="pr_name" name="producer" size="30" type="text">
+							<input class="xlarge" id="pr_name" name="pr_names" size="30" type="text">
 						</div>
 						
-						<label for="producer_id">CODIGO</label>
+						<label for="pr_code">CODIGO</label>
 						<div class="input">
-							<input class="xlarge" id="pr_code" name="producer_id" size="30" type="text">
+							<input class="xlarge" id="pr_code" name="pr_code" size="30" type="text">
 						</div>		
 					
-						<label for="transaction_date">FECHA</label>
+						<label for="tr_date">FECHA</label>
 						<div class="input">
-							<input class="xlarge" id="transaction_date" name="transaction_date" size="30" type="text">
+							<input class="xlarge" id="tr_date" name="tr_date" size="30" type="text">
 						</div>		
 					</fieldset>
 				</form>
@@ -118,19 +143,19 @@
 				<form>
 					<fieldset>
 						
-						<label for="producer_name">COMITE</label>
+						<label for="pr_community">COMITE</label>
 						<div class="input">
-							<input class="xlarge" id="producer" name="producer" size="30" type="text">
+							<input class="xlarge" id="pr_community" name="pr_community" size="30" type="text">
 						</div>
 										
-						<label for="producer_id" >CENTRO DE ACOPIO</label>
+						<label for="tr_center" >CENTRO DE ACOPIO</label>
 						<div class="input">
-							<input class="xlarge" id="producer_id" name="producer_id" size="30" type="text">
+							<input class="xlarge" id="tr_center" name="tr_center" size="30" type="text">
 						</div>		
 						
-						<label for="transaction_date">HORA DE ENTREGA</label>
+						<label for="tr_hour">HORA DE ENTREGA</label>
 						<div class="input" id="datepicker">
-							<input class="xlarge" id="transaction_date" name="transaction_date" size="30" type="text">
+							<input class="xlarge" id="tr_date" name="tr_date" size="30" type="text">
 						</div>		
 						
 					</fieldset>
