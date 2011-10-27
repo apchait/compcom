@@ -37,22 +37,9 @@
 				data = producer_hash['idToAll'][id];
 				console.log(data);
 				// Set the values of the different html fields to that producer
-				if (data){
-					$("#pr_name").val(data["pr_name"]);
-					$("#pr_code").val(data["pr_code"]);
-					$("#pr_community").val(data["pr_community"]);
-				}
-				else{
-					// Account for names and codes not in the database
-					if (mode == 'name'){
-						$("#pr_code").val('');
-						$("#pr_community").val('');
-					}
-					else if(mode == 'code'){
-						$("#pr_name").val('');
-						$("#pr_community").val('');
-					}
-				}
+				$("#pr_name").val(data["pr_name"]);
+				$("#pr_code").val(data["pr_code"]);
+				$("#pr_community").val(data["pr_community"]);
 			}
 				
 			// Set a list of names for autocomplete
