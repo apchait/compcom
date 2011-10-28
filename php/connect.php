@@ -4,7 +4,7 @@ function connectToDb(){
 	$url = (!empty($_SERVER['HTTPS'])) ? "https://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'] : "http://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
 	$onIschool = substr_count($url, "ischool");
 	if ($onIschool){
-		$link = mysql_connect('', 'acopio', 'w349jd') or die('Could not connect: ' . mysql_error()); 
+		$link = mysql_connect('', 'acopio', 'acopio11235') or die('Could not connect: ' . mysql_error()); 
 		mysql_select_db('acopio') or die ('Could not select: ' . mysql_error());
 	}
 	else{

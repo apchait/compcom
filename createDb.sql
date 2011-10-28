@@ -11,7 +11,8 @@ DROP TABLE IF EXISTS transaction;
 CREATE TABLE transaction(
 	tr_id INTEGER AUTO_INCREMENT PRIMARY KEY,
 	tr_folio INTEGER,
-	tr_producer_id INTEGER,
+	tr_pr_id INTEGER,
+	tr_pr_code INTEGER,
 	tr_date VARCHAR(40),
 	tr_center VARCHAR(40),
 	tr_time VARCHAR(40),

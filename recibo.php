@@ -10,6 +10,23 @@
 	
 	<script>
 		$(document).ready(function(){
+			
+			$('#submit').click(function(){
+				data = {};
+				$('.savedb').each(function(i){
+					if ($(this).val()){
+						data[$(this).attr("name")] = $(this).val();
+					}
+					else if($(this).html()){
+						data[$(this).attr("name")] = $(this).html();
+					}
+				});
+				
+				console.log(data);
+				$.post('./php/addTransaction.php', {"fields": data}, function(response){
+					console.log(response);
+				})
+			});
 		
 			// Producer hash has 3 arrays codeToId, nameToId, and idToAll
 			// You can use any producer name or code to get the database id, then use that id to get the rest of the producer's information
@@ -70,6 +87,8 @@
 				fillInForProducer('code', $('#pr_code').val());
 			});
 			
+			
+			
 		});
 	</script>
 	
@@ -102,7 +121,7 @@
 					<span class="label">INFORMACION DE PRODUCTOR</span>
 				</div>
 				<div class="span2">
-					FOLIO&deg;: <span id="transaction_folio" class="label notice" style="font-size:15px;">1234</span>
+					FOLIO&deg;: <span id="tr_folio" name="tr_folio" class="label notice savedb" style="font-size:15px;">1234</span>
 				</div>
 			</div>
 			<div id="producer-left" class="well span8">
@@ -110,17 +129,17 @@
 					<fieldset>
 						<label for="">PRODUCTOR</label>
 						<div class="input">
-							<input class="xlarge" id="pr_name" name="pr_names" size="30" type="text">
+							<input class="xlarge savedb" id="pr_name" name="pr_names" size="30" type="text">
 						</div>
 						
 						<label for="pr_code">CODIGO</label>
 						<div class="input">
-							<input class="xlarge" id="pr_code" name="pr_code" size="30" type="text">
+							<input class="xlarge savedb" id="pr_code" name="pr_code" size="30" type="text">
 						</div>		
 					
 						<label for="tr_date">FECHA</label>
 						<div class="input">
-							<input class="xlarge" id="tr_date" name="tr_date" size="30" type="text">
+							<input class="xlarge savedb" id="tr_date" name="tr_date" size="30" type="text">
 						</div>		
 					</fieldset>
 				</form>
@@ -132,17 +151,17 @@
 						
 						<label for="pr_community">COMITE</label>
 						<div class="input">
-							<input class="xlarge" id="pr_community" name="pr_community" size="30" type="text">
+							<input class="xlarge savedb" id="pr_community" name="pr_community" size="30" type="text">
 						</div>
 										
 						<label for="tr_center" >CENTRO DE ACOPIO</label>
 						<div class="input">
-							<input class="xlarge" id="tr_center" name="tr_center" size="30" type="text">
+							<input class="xlarge savedb" id="tr_center" name="tr_center" size="30" type="text">
 						</div>		
 						
 						<label for="tr_hour">HORA DE ENTREGA</label>
 						<div class="input" id="datepicker">
-							<input class="xlarge" id="tr_date" name="tr_date" size="30" type="text">
+							<input class="xlarge savedb" id="tr_date" name="tr_date" size="30" type="text">
 						</div>		
 						
 					</fieldset>
@@ -155,33 +174,33 @@
 				<span class="label">PESO Y PRECIO</span>
 				<form>
 					<fieldset>
-							<label for="transaction_lot_num">N&deg; LOTE</label>
+							<label for="tr_lot_num">N&deg; LOTE</label>
 							<div class="input">
-								<input class="small" id="transaction_lot_num" name="transaction_lot_num" size="30" type="text">
+								<input class="small savedb" id="tr_lot_num" name="tr_lot_num" size="30" type="text">
 							</div>
-							<label for="transaction_sack_num">N&deg; SACO</label>
+							<label for="tr_sack_num">N&deg; SACO</label>
 							<div class="input">
-								<input class="small" id="transaction_sack_num" name="transaction_sack_num" size="30" type="text">
+								<input class="small savedb" id="tr_sack_num" name="tr_sack_num" size="30" type="text">
 							</div>
 							<br>
 							<div class="well">
 								<span class="label">DETALLES DE PESO</span><br>
-								<label for="transaction_lot_num">PESO BRUTO</label>
+								<label for="tr_total_weight">PESO BRUTO</label>
 								<div class="input">
-									<input class="mini" id="transaction_lot_num" name="transaction_lot_num" size="30" type="text">
+									<input class="mini savedb" id="tr_total_weight" name="tr_total_weight" size="30" type="text">
 								</div>
-								<label for="transaction_sack_num">TARA</label>
+								<label for="tr_sack_num">TARA</label>
 								<div class="input">
-									<input class="mini" id="transaction_sack_num" name="transaction_sack_num" size="30" type="text">
+									<input class="mini savedb" id="tr_sack_num" name="tr_sack_num" size="30" type="text">
 								</div>		
-								<label for="transaction_quality">PESO NETO</label>
+								<label for="tr_net_weight">PESO NETO</label>
 								<div class="input">
-									<input class="mini" id="transaction_quality" name="transaction_quality" size="30" type="text">
+									<input class="mini savedb" id="tr_net_weight" name="tr_net_weight" size="30" type="text">
 								</div>	
 							</div>
-							<label for="transaction_quality">CALIDAD</label>
+							<label for="tr_quality">CALIDAD</label>
 							<div class="input">
-								<input class="small" id="transaction_quality" name="transaction_quality" size="30" type="text">
+								<input class="small savedb" id="tr_quality" name="tr_quality" size="30" type="text">
 							</div>		
 					</fieldset>
 				</form>
@@ -190,50 +209,50 @@
 				<span class="label">CALIDAD</span>
 				<form>
 					<fieldset>
-							<label for="transaction_sf">S/F</label>
+							<label for="tr_qualitysf">S/F</label>
 							<div class="input">
-								<input class="mini" id="transaction_sf" name="transaction_sf" size="30" type="text">
+								<input class="mini savedb" id="tr_quality_sf" name="tr_quality_sf" size="30" type="text">
 							</div>
-							<label for="transaction_mordido">MORDIDO</label>
+							<label for="tr_quality_mordido">MORDIDO</label>
 							<div class="input">
-								<input class="mini" id="transaction_mordido" name="transaction_mordido" size="30" type="text">
+								<input class="mini savedb" id="tr_quality_mordido" name="tr_quality_mordido" size="30" type="text">
 							</div>		
-							<label for="transaction_pelado">PELADO</label>
+							<label for="tr_quality_pelado">PELADO</label>
 							<div class="input">
-								<input class="mini" id="transaction_pelado" name="transaction_pelado" size="30" type="text">
+								<input class="mini savedb" id="tr_quality_pelado" name="tr_quality_pelado" size="30" type="text">
 							</div>
-							<label for="transaction_verde">VERDE</label>
+							<label for="tr_quality_verde">VERDE</label>
 							<div class="input">
-								<input class="mini" id="transaction_verde" name="transaction_verde" size="30" type="text">
+								<input class="mini savedb" id="tr_quality_verde" name="tr_quality_verde" size="30" type="text">
 							</div>
-							<label for="transaction_broca">BROCA</label>
+							<label for="tr_quality_broca">BROCA</label>
 							<div class="input">
-								<input class="mini" id="transaction_broca" name="transaction_broca" size="30" type="text">
+								<input class="mini savedb" id="tr_quality_broca" name="tr_quality_broca" size="30" type="text">
 							</div>
-							<label for="transaction_moho">MOHO</label>
+							<label for="tr_quality_moho">MOHO</label>
 							<div class="input">
-								<input class="mini" id="transaction_moho" name="transaction_moho" size="30" type="text">
+								<input class="mini savedb" id="tr_quality_moho" name="tr_quality_moho" size="30" type="text">
 							</div>
-							<label for="transaction_gqmd">G. QMD</label>
+							<label for="tr_quality_gqmd">G. QMD</label>
 							<div class="input">
-								<input class="mini" id="transaction_gqmd" name="transaction_gqmd" size="30" type="text">
+								<input class="mini savedb" id="tr_quality_gqmd" name="tr_quality_gqmd" size="30" type="text">
 							</div>
-							<label for="transaction_total">TOTAL</label>
+							<label for="tr_quality_total">TOTAL</label>
 							<div class="input">
-								<input class="mini" id="transaction_total" name="transaction_total" size="30" type="text">
+								<input class="mini savedb" id="tr_quality_total" name="tr_quality_total" size="30" type="text">
 							</div>	
 					</fieldset>
 				</form>
 			</div><!-- quality -->
 			<div id="observations" class="well span5">
 				<span class="label">OBSERVACIONES</span><br>
-				<label for="transaction_observations">OBSERVACIONES</label>
+				<label for="tr_observations">OBSERVACIONES</label>
 				<div class="input">
-					<textarea class="span5" id="transaction_observations" name="transaction_observations" rows="9"></textarea>
+					<textarea class="span5 savedb" id="tr_observations" name="tr_observations" rows="9"></textarea>
 				</div>
-				<label for="transaction_recibido">RECIBIDO POR:</label>
+				<label for="tr_reciever">RECIBIDO POR:</label>
 				<div class="input">
-					<input class="xlarge" id="transaction_recibido" name="transaction_recibido" type="text" size="30"></textarea>
+					<input class="xlarge savedb" id="tr_reciever" name="tr_reciever" type="text" size="30"></textarea>
 				</div>
 			</div><!-- observations -->
 		</div> <!-- middle-row -->
@@ -242,10 +261,10 @@
 			<div id="signature" class="well span15">
 				<div id="sign" class="input large span-two-thirds">
 					<label for="sign-here" style="width:150px;">ENTREGUE CONFIRME</label>
-					<input id="sign-here" class="xlarge span8" style="border-bottom-color: black;">
+					<input class="xlarge span8 savedb" style="border-bottom-color: black;">
 				</div>
 				<div id="actions" class="span3">
-					<button name="submit" class="btn large success" type="reset">SUBMIT</button>
+					<button name="submit" class="btn large success" id="submit" type="reset">SUBMIT</button>
 				</div>
 			</div>
 		</div> <!-- bottom-row -->
