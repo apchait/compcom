@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html manifest="./cache.manifest">
 <head>
 	<meta charset="utf-8" />
@@ -6,39 +7,8 @@
 	<link rel="stylesheet" href="../css/ui-lightness/jquery-ui-1.8.16.custom.css">
 	<script src="../js/jquery-1.6.2.min.js"></script>
 	<script src="../js/jquery-ui-1.8.16.custom.min.js"></script>
-	<script src="./js.js"></script>
-	
-	<script type="text/javascript">
-		$(document).ready(function(){
-			
-			$.getJSON('db.json',function(data){
-				console.log(data);
-			});
+	<script src="./action.js"></script>
 		
-			// If app is offline, store in localStorage
-			
-			// If not store in localStorage and server
-		
-		
-			
-			tr1 = {"folio": 1001, "pr_name": "Ariel Chait", "pr_code": "0011"};
-			tr2 = {"folio": 1034, "pr_name": "Pedro Alvarez", "pr_code": "3011"};
-			localStorage['transactions'] = JSON.stringify([tr1,tr2]);
-			
-			
-			maxFolio = 0;
-			// Find out what the highest folio num is so far
-			console.log(localStorage);
-			$.each(JSON.parse(localStorage['transactions']), function(i,v){
-				console.log(v);
-				if(v['folio'] > maxFolio){
-					maxFolio = v['folio'];
-				}
-			});
-			
-			console.log(maxFolio);
-		});
-	</script>
 
 </head>
 <body>
@@ -70,6 +40,7 @@
 				</div>
 				<div class="span2">
 					FOLIO&deg;: <span id="tr_folio" name="tr_folio" class="label notice savedb" style="font-size:15px;">1234</span>
+					<span id="networkStatus">ONLINE</span>
 				</div>
 			</div>
 			<div id="producer-left" class="well span8">
@@ -77,12 +48,12 @@
 					<fieldset>
 						<label for="">PRODUCTOR</label>
 						<div class="input">
-							<input class="xlarge savedb" id="pr_name" name="pr_names" size="30" type="text">
+							<input class="xlarge savedb" id="tr_pr_name" name="tr_pr_name" size="30" type="text">
 						</div>
 						
 						<label for="pr_code">CODIGO</label>
 						<div class="input">
-							<input class="xlarge savedb" id="pr_code" name="pr_code" size="30" type="text">
+							<input class="xlarge savedb" id="tr_pr_code" name="tr_pr_code" size="30" type="text">
 						</div>		
 					
 						<label for="tr_date">FECHA</label>

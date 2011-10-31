@@ -63,6 +63,7 @@
 			$.getJSON("./php/getList.php",function(data){
 				// Get the names (keys of the array)
 				producer_hash = data;
+				console.log(JSON.stringify(data));
 				$.each(data["nameToId"], function(i, v){
 					name_keys.push(i);
 				});
