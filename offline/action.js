@@ -1,5 +1,20 @@
 $(document).ready(function(){
 	console.log("Action!");
+	//localStorage.clear();
+
+	centerId = 1;
+	// Set the acopio center id
+	localStorage['center'] = JSON.stringify(1);
+	trArray = [];
+	if (JSON.parse(localStorage['transactions'] != null)){
+		trArray = JSON.parse(localStorage['transactions']);
+	}
+	
+	trLength = trArray.length;
+	
+	// tell us how many transactions are stored locally
+	console.log(trLength + " transaction stored locally");
+		
 	var online = 1;
 	// Add a listener to tell us whether we are online or not
 	window.applicationCache.addEventListener("error", function(e) {
@@ -20,8 +35,18 @@ $(document).ready(function(){
 		});
 		
 		console.log(data);
+		trArray.push(data);
+		localStorage['transactions'] = JSON.stringify(trArray);
+		console.log(localStorage);
 		// If online, send to db and store locally
-		
+		// try to send local storage
+	$.post('http://groups.ischool.berkeley.edu/acopio/compcom/offline/recieveLocalStorage.php',localStorage, function(response){
+		if(response == "success"){
+			console.log('clearing local storage');
+			localStorage.clear();
+			localStorage['center'] = JSON.stringify(1);
+		}
+	});	
 		// If not online store locally and get ready to send to db later
 	/*	
 		$.post('./php/addTransaction.php', {"fields": data}, function(response){

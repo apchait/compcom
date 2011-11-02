@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# rev 10
+# rev 18
 ../css/bootstrap/bootstrap.min.css
 ../js/jquery-1.6.2.min.js
 ../js/jquery-ui-1.8.16.custom.min.js
@@ -22,3 +22,6 @@ CACHE MANIFEST
 ../css/ui-lightness/images/ui-icons_ef8c08_256x240.png
 ../css/ui-lightness/images/ui-icons_ffd27a_256x240.png
 ../css/ui-lightness/images/ui-icons_ffffff_256x240.png
+
+NETWORK:
+./recieveLocalStorage.php
