@@ -41,7 +41,8 @@ $(document).ready(function(){
 	});
 	
 	// Gather values from the form and submit to database
-	$('#submit').click(function(){
+	function sub(){
+		// Collect fields from html into data dictionary
 		data = {};
 		$('.savedb').each(function(i){
 			if ($(this).val()){
@@ -51,44 +52,51 @@ $(document).ready(function(){
 				data[$(this).attr("name")] = $(this).html();
 			}
 		});
-		
-		console.log(data);
+		// Make sure there are enough fields here
+		if (data['tr_pr_code'] == undefined){
+			alert("Codigo Necesario");
+			return 0;
+		}
+		else{
+			// De-activate submit button
+			$('#submit').click(function(){
+				alert("Por Favor Espere");
+			});
+		}
+		// If not, ask to fill required fields
 		// Push that onto the list of transactions
+		console.log(data);
 		trArray.push(data);
 		localStorage['transactions'] = JSON.stringify(trArray);
 		// Replace the last saved transaction with this one for follow up page
 		localStorage['lastTransaction'] = JSON.stringify(data);
 		// Increment and save the folio number
 		localStorage['nextFolio'] = Number(localStorage['nextFolio']) + 1;
-		console.log(localStorage['nextFolio']);
-//		console.log(localStorage);
-		// If online, send to db and store locally
-		// try to send local storage
-	$.post('./recieveLocalStorage.php',{'transactions' : JSON.parse(localStorage['transactions']), "center": JSON.parse(localStorage['center'])}, function(response){
-		console.log(response);
-		if(response == "success"){
-			console.log('clearing local storage');
-			// Save the folio and last transaction
-			nextFolio = localStorage['nextFolio'];
-			lastTr = JSON.parse(localStorage['lastTransaction']);
-			localStorage.clear();
-			trArray = [];
-			localStorage['center'] = JSON.stringify(centerId);
-			localStorage['nextFolio'] = nextFolio;
-			localStorage['lastTransaction'] = JSON.stringify(lastTr);
-			console.log('Changing Location');
-			window.location = "imprimir.html";
-		}
+		// Everything in order, show spinner and send to db
 		
-
-	});	
-		// If not online store locally and get ready to send to db later
-	/*	
-		$.post('./php/addTransaction.php', {"fields": data}, function(response){
+		$.post('./recieveLocalStorage.php',{'transactions' : JSON.parse(localStorage['transactions']), "center": JSON.parse(localStorage['center'])}, function(response){
 			console.log(response);
-		})
-	*/
-	});
+			if(response == "success"){
+				console.log('clearing local storage');
+				// Save the folio and last transaction
+				nextFolio = localStorage['nextFolio'];
+				lastTr = JSON.parse(localStorage['lastTransaction']);
+				localStorage.clear();
+				trArray = [];
+				localStorage['center'] = JSON.stringify(centerId);
+				localStorage['nextFolio'] = nextFolio;
+				localStorage['lastTransaction'] = JSON.stringify(lastTr);
+				console.log('Changing Location');
+				window.location = "imprimir.html";
+			}
+			else{
+				// Response failed, send an email to us and alert the user
+				alert("Error: " + response);
+				
+			}
+		});	
+	}; // End Submit Funtion
+	$('#submit').click(sub);
 	
 	// Set the datepicker and current date
 	$('#tr_date').datepicker({ defaultDate: +7 });

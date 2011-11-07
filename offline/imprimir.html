@@ -9,9 +9,9 @@
 	<script type="text/javascript">
 		$(document).ready(function(){
 			// Set up a dictionary of db names to plain english
-			dict = {"tr_folio":"FOLIO","tr_pr_code":"CODIGO", "tr_date":"FECHA", "tr_hour":"HORA","tr_center":"CENTRO", "tr_lot_num":"NUM LOTE", "tr_sack_num":"NUM SACO", "tr_total_weight":"PESO BRUTO", "tr_net_weight":"PESO NETO", "tr_quality":"CALIDAD", "tr_quality_sf":"SF", "tr_quality_mordido":"MORDIDO", "tr_quality_pelado":"PELADO", "tr_quality_verde":"VERDE", "tr_quality_broca":"BROVA", "tr_quality_moho":"MOHO", "tr_quality_gqmd":"GQMD", "tr_quality_total":"CALIDAD TOTAL", "tr_observations":"OBSERVACIONES", "tr_reciever":"RECIDO POR"}
+			dict = {"tr_folio":"FOLIO","tr_pr_code":"CODIGO", "tr_date":"FECHA", "tr_time":"HORA","tr_center":"CENTRO", "tr_lot_num":"NUM LOTE", "tr_sack_num":"NUM SACO", "tr_total_weight":"PESO BRUTO", "tr_net_weight":"PESO NETO", "tr_quality":"CALIDAD", "tr_quality_sf":"SF", "tr_quality_mordido":"MORDIDO", "tr_quality_pelado":"PELADO", "tr_quality_verde":"VERDE", "tr_quality_broca":"BROVA", "tr_quality_moho":"MOHO", "tr_quality_gqmd":"GQMD", "tr_quality_total":"CALIDAD TOTAL", "tr_observations":"OBSERVACIONES", "tr_reciever":"RECIDO POR"}
 			lastTr = JSON.parse(localStorage["lastTransaction"]);
-			
+			console.log(lastTr);
 			var $wrap = $('<div>').attr('id', 'tableWrap');
 			var $tbl = $('<table>').attr('id', 'basicTable');
 			$tbl.attr('class', 'zebra-striped');
@@ -29,6 +29,10 @@
 	</script>
 </head>
 <body>
-
+	<div class="row">
+		<div class="span3">
+			<img src="../css/images/compcom_logo.png"/>
+		</div>
+	<div>
 </body>
 </html>
