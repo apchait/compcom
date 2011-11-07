@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="../css/bootstrap/bootstrap.min.css">
+	<link rel="stylesheet" href="../css/ui-lightness/jquery-ui-1.8.16.custom.css">
+	<script src="../js/jquery-1.6.2.min.js"></script>
+	<script src="../js/jquery-ui-1.8.16.custom.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			// Set up a dictionary of db names to plain english
+			dict = {"tr_folio":"FOLIO","tr_pr_code":"CODIGO", "tr_date":"FECHA", "tr_hour":"HORA","tr_center":"CENTRO", "tr_lot_num":"NUM LOTE", "tr_sack_num":"NUM SACO", "tr_total_weight":"PESO BRUTO", "tr_net_weight":"PESO NETO", "tr_quality":"CALIDAD", "tr_quality_sf":"SF", "tr_quality_mordido":"MORDIDO", "tr_quality_pelado":"PELADO", "tr_quality_verde":"VERDE", "tr_quality_broca":"BROVA", "tr_quality_moho":"MOHO", "tr_quality_gqmd":"GQMD", "tr_quality_total":"CALIDAD TOTAL", "tr_observations":"OBSERVACIONES", "tr_reciever":"RECIDO POR"}
+			lastTr = JSON.parse(localStorage["lastTransaction"]);
+			
+			var $wrap = $('<div>').attr('id', 'tableWrap');
+			var $tbl = $('<table>').attr('id', 'basicTable');
+			$tbl.attr('class', 'zebra-striped');
+			$tbl.attr('style', 'width:300px');
+			$.each(lastTr, function(i,v){
+				console.log(i);
+				console.log(v);
+				$tbl.append($('<tr>').append($('<td>').text(dict[i]), $('<td>').text(v)));
+			});
+
+			$wrap.append($tbl);
+			$('body').append($wrap);
+			
+		});
+	</script>
+</head>
+<body>
+
+</body>
+</html>

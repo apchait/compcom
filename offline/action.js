@@ -1,8 +1,25 @@
 $(document).ready(function(){
 	console.log("Action!");
-	//localStorage.clear();
-
-	centerId = 1;
+	centerId = 2;
+	
+	if(centerId == 1){
+		folioStart = 0;
+	}
+	else if (centerId == 2){
+		folioStart = 5000;
+	}
+	else{
+		folioStart = 10000;
+	}
+	
+	// If there hasn't been a folio yet, set it to the start folio for this center
+	if(localStorage["nextFolio"] == undefined){
+		localStorage["nextFolio"] = folioStart;
+	}
+	
+	currentFolio = localStorage["nextFolio"];
+	$("#tr_folio").html(currentFolio);
+	
 	// Set the acopio center id
 	localStorage['center'] = JSON.stringify(1);
 	trArray = [];
@@ -14,6 +31,7 @@ $(document).ready(function(){
 	
 	// tell us how many transactions are stored locally
 	console.log(trLength + " transaction stored locally");
+	$("#storedTransactions").html(trLength);
 		
 	var online = 1;
 	// Add a listener to tell us whether we are online or not
@@ -35,17 +53,34 @@ $(document).ready(function(){
 		});
 		
 		console.log(data);
+		// Push that onto the list of transactions
 		trArray.push(data);
 		localStorage['transactions'] = JSON.stringify(trArray);
-		console.log(localStorage);
+		// Replace the last saved transaction with this one for follow up page
+		localStorage['lastTransaction'] = JSON.stringify(data);
+		// Increment and save the folio number
+		localStorage['nextFolio'] = Number(localStorage['nextFolio']) + 1;
+		console.log(localStorage['nextFolio']);
+//		console.log(localStorage);
 		// If online, send to db and store locally
 		// try to send local storage
-	$.post('http://groups.ischool.berkeley.edu/acopio/compcom/offline/recieveLocalStorage.php',localStorage, function(response){
+	$.post('./recieveLocalStorage.php',{'transactions' : JSON.parse(localStorage['transactions']), "center": JSON.parse(localStorage['center'])}, function(response){
+		console.log(response);
 		if(response == "success"){
 			console.log('clearing local storage');
+			// Save the folio and last transaction
+			nextFolio = localStorage['nextFolio'];
+			lastTr = JSON.parse(localStorage['lastTransaction']);
 			localStorage.clear();
-			localStorage['center'] = JSON.stringify(1);
+			trArray = [];
+			localStorage['center'] = JSON.stringify(centerId);
+			localStorage['nextFolio'] = nextFolio;
+			localStorage['lastTransaction'] = JSON.stringify(lastTr);
+			console.log('Changing Location');
+			window.location = "imprimir.html";
 		}
+		
+
 	});	
 		// If not online store locally and get ready to send to db later
 	/*	

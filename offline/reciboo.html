@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html manifest="./cache.manifest">
+<!-- <html manifest="./cache.manifest"> -->
+<html>
 <head>
 	<meta charset="utf-8" />
 	<link rel="stylesheet" href="../css/bootstrap/bootstrap.min.css">
@@ -40,6 +41,7 @@
 				<div class="span2">
 					FOLIO&deg;: <span id="tr_folio" name="tr_folio" class="label notice savedb" style="font-size:15px;">1234</span>
 					<span id="networkStatus">ONLINE</span>
+					<span id="storedTransactions">-1</span>&nbspTransactions Stored
 				</div>
 			</div>
 			<div id="producer-left" class="well span8">
@@ -47,7 +49,7 @@
 					<fieldset>
 						<label for="">PRODUCTOR</label>
 						<div class="input">
-							<input class="xlarge savedb" id="tr_pr_name" name="tr_pr_name" size="30" type="text">
+							<input class="xlarge" id="tr_pr_name" name="tr_pr_name" size="30" type="text">
 						</div>
 						
 						<label for="pr_code">CODIGO</label>
@@ -69,7 +71,7 @@
 						
 						<label for="pr_community">COMITE</label>
 						<div class="input">
-							<input class="xlarge savedb" id="pr_community" name="pr_community" size="30" type="text">
+							<input class="xlarge" id="pr_community" name="pr_community" size="30" type="text">
 						</div>
 										
 						<label for="tr_center" >CENTRO DE ACOPIO</label>
@@ -77,9 +79,9 @@
 							<input class="xlarge savedb" id="tr_center" name="tr_center" size="30" type="text">
 						</div>		
 						
-						<label for="tr_hour">HORA DE ENTREGA</label>
+						<label for="tr_time">HORA DE ENTREGA</label>
 						<div class="input" id="datepicker">
-							<input class="xlarge savedb" id="tr_date" name="tr_date" size="30" type="text">
+							<input class="xlarge savedb" id="tr_time" name="tr_time" size="30" type="text">
 						</div>		
 						
 					</fieldset>
