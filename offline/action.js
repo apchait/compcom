@@ -1,5 +1,24 @@
 $(document).ready(function(){
 	console.log("Action!");
+	
+	// Set up popover with localStorage
+	function popoverContent(){
+		trs = JSON.parse(localStorage['transactions']);
+		$table = $("<table>").append($("<tr>").append($("<td>").html("Codigo"), $("<td>").html("Folio")));
+		$.each(trs,function(i,v){
+			console.log(v);
+			$table.append($("<tr>").append($("<td>").html(v['tr_pr_code']), $("<td>").html(v['tr_folio'])));
+		});			
+		return $table;
+		
+	}
+	// Set up the popover to call popoverContent to get a table of trs in localStorage
+	$("#tr_popover").popover({"content":popoverContent, "html":1, "placement": "left"});
+	// Set up click to clear LS for now
+	$("#tr_popover").click(function(){
+		localStorage.clear();
+	});
+		
 	centerId = 2;
 	
 	if(centerId == 1){
@@ -37,6 +56,7 @@ $(document).ready(function(){
 	// Add a listener to tell us whether we are online or not
 	window.applicationCache.addEventListener("error", function(e) {
 		$("#networkStatus").html("OFFLINE");
+		$("#tr_popover").toggleClass("danger","success");
 		online = 0;
 	});
 	
