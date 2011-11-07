@@ -7,9 +7,39 @@
 	<link rel="stylesheet" href="../css/ui-lightness/jquery-ui-1.8.16.custom.css">
 	<script src="../js/jquery-1.6.2.min.js"></script>
 	<script src="../js/jquery-ui-1.8.16.custom.min.js"></script>
+	<script src="../js/bootstrap-twipsy.js"></script>
+	<script src="../js/bootstrap-popover.js"></script>
 	<script src="./action.js"></script>
+	
+	<script type="text/javascript">
+	$(document).ready(function(){
+	
+		function popoverContent(){
+			trs = JSON.parse(localStorage['transactions']);
+/*
+			$list = $("<ul>").attr('style','list-style-type: none');
+			$.each(trs,function(i,v){
+				$li = $("<li>").html(v['tr_folio']);
+				$list.append($li);
+			});
+			return $list;
+*/
+			$table = $("<table>").append($("<tr>").append($("<td>").html("Codigo"), $("<td>").html("Folio")));
+			$.each(trs,function(i,v){
+				console.log(v);
+				$table.append($("<tr>").append($("<td>").html(v['tr_pr_code']), $("<td>").html(v['tr_folio'])));
+			});			
+			return $table;
+			
+		}
+		$("#tr_popover").popover({"content":popoverContent, "html":1, "placement": "left"});
 		
+		$("#tr_popover").click(function(){
+			localStorage.clear();
+		});
 
+	});
+	</script>
 </head>
 <body>
 
@@ -39,9 +69,9 @@
 					<span class="label">INFORMACION DE PRODUCTOR</span>
 				</div>
 				<div class="span2">
-					FOLIO&deg;: <span id="tr_folio" name="tr_folio" class="label notice savedb" style="font-size:15px;">1234</span>
+					FOLIO&deg;: <span id="tr_folio" name="tr_folio" class="label notice savedb" style="font-size:15px;">1234</span> 
 					<span id="networkStatus">ONLINE</span>
-					<span id="storedTransactions">-1</span>&nbspTransactions Stored
+					<a class="btn danger" id="tr_popover" rel="popover"><span id="storedTransactions">-1</span>&nbspTransactions Stored</a>
 				</div>
 			</div>
 			<div id="producer-left" class="well span8">
