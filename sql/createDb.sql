@@ -10,9 +10,9 @@ CREATE TABLE producer(
 DROP TABLE IF EXISTS transaction;
 CREATE TABLE transaction(
 	tr_id INTEGER AUTO_INCREMENT PRIMARY KEY,
-	tr_folio INTEGER,
+	tr_folio VARCHAR(20),
 	tr_pr_id INTEGER,
-	tr_pr_code INTEGER,
+	tr_pr_code VARCHAR(20),
 	tr_date VARCHAR(40),
 	tr_center VARCHAR(40),
 	tr_time VARCHAR(40),

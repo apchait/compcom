@@ -1,9 +1,17 @@
 CACHE MANIFEST
-# rev 34
+# rev 74
+./recibo.html
+./imprimir.html
+./recieveLocalStorage.php
+../php/connect.php
 ../css/bootstrap/bootstrap.min.css
 ../js/jquery-1.6.2.min.js
 ../js/jquery-ui-1.8.16.custom.min.js
-../compcom_logo.png
+../js/jquery.ui.datepicker-es.js
+../js/bootstrap-twipsy.js
+../js/bootstrap-popover.js
+../js/bootstrap-buttons.js
+../css/images/compcom_logo.png
 ./action.js
 ./list.json
 

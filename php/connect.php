@@ -4,18 +4,18 @@ function connectToDb(){
 	$url = (!empty($_SERVER['HTTPS'])) ? "https://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'] : "http://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
 	$onIschool = substr_count($url, "ischool");
 	if ($onIschool){
-		$link = mysql_connect('', 'acopio', 'acopio11235') or die('Could not connect: ' . mysql_error()); 
+		$link = mysql_connect('', 'acopio', 'acopio11235') or die(mysql_errno()); 
 		mysql_select_db('acopio') or die ('Could not select: ' . mysql_error());
 	}
 	else{
-		$link = mysql_connect('localhost', 'root', 'root') or die('Could not connect: ' . mysql_error()); 
+		$link = mysql_connect('localhost', 'root', 'root') or die(mysql_errno()); 
 		mysql_select_db('acopio') or die ('Could not select: ' . mysql_error());
 	}
 	return $link;
 }
 
 function runQuery($link, $query){
-	$result = mysql_query($query,$link) or die('Error: ' . mysql_error());
+	$result = mysql_query($query,$link) or die(mysql_errno());
 	return $result;
 }
 
