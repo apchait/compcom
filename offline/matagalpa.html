@@ -7,6 +7,9 @@
 	<script src="../js/jquery-ui-1.8.16.custom.min.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
+			if(localStorage == undefined){
+				localStorage["center"] = JSON.stringify("matagalpa");
+			}
 			// Set the center id
 			if (JSON.parse(localStorage["center"]) != "matagalpa"){
 				localStorage.clear();
