@@ -5,6 +5,7 @@
 	<title>Matagalpa</title>
 	<script src="../js/jquery-1.6.2.min.js"></script>
 	<script src="../js/jquery-ui-1.8.16.custom.min.js"></script>
+
 	<script type="text/javascript">
 		$(document).ready(function(){
 			if(localStorage["length"] == 0){
@@ -15,10 +16,10 @@
 				localStorage.clear();
 			}
 			localStorage["center"] = JSON.stringify("matagalpa");
-			// Check for local market price
 			
 			// Send to dash
 			window.location = "dash.html";
+			
 		});
 	</script>
 </head>
