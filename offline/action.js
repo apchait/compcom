@@ -21,13 +21,13 @@ $(document).ready(function(){
 	}	
 	setUpPopover();
 	
-	var centerId = 2;
+	var centerId = JSON.parse(localStorage["center"]);
+	console.log(centerId);
 	function setUpFolioNumbers(){
-		console.log(centerId);
-		if(centerId == 1){
+		if(centerId == "rancho grande"){
 			folioStart = 0;
 		}
-		else if (centerId == 2){
+		else if (centerId == "matagalpa"){
 			folioStart = 5000;
 		}
 		else{
