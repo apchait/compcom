@@ -59,6 +59,7 @@ $(document).ready(function(){
 	
 	var online = 1;
 	function setUpOnlineOrNot(){
+		console.log("Online", online);
 		// Add a listener to tell us whether we are online or not
 		window.applicationCache.addEventListener("error", function(e) {
 			console.log("offline!");
@@ -126,12 +127,15 @@ $(document).ready(function(){
 						return 1;
 					}
 					console.log('Changing Location');
-					window.location = "imprimir.html";
+					console.log("Open new window");
+					window.open("imprimir.html", "Imprimir", "width=320,height=500");
+					window.location = "dash.html";
 				});
 			}
 			else{
 				console.log("offline switch");
-				window.location = "imprimir.html";
+					window.open("imprimir.html");
+					window.location = "dash.html";
 			}
 		}); // End Submit Funtion	
 	}

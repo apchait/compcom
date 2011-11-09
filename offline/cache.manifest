@@ -1,9 +1,12 @@
 CACHE MANIFEST
-# rev 81
+# rev 99
 ./recibo.html
 ./imprimir.html
 ./recieveLocalStorage.php
 ./codeToName.js
+./dash.js
+./action.js
+./list.json
 ../php/connect.php
 ../css/bootstrap/bootstrap.min.css
 ../js/jquery-1.6.2.min.js
@@ -13,8 +16,6 @@ CACHE MANIFEST
 ../js/bootstrap-popover.js
 ../js/bootstrap-buttons.js
 ../css/images/compcom_logo.png
-./action.js
-./list.json
 
 ../css/ui-lightness/jquery-ui-1.8.16.custom.css
 ../css/ui-lightness/images/ui-bg_diagonals-thick_18_b81900_40x40.png
@@ -33,4 +34,4 @@ CACHE MANIFEST
 ../css/ui-lightness/images/ui-icons_ffffff_256x240.png
 
 NETWORK:
-./recieveLocalStorage.php
+./matagalpa.html

@@ -8,15 +8,11 @@
 
 	<script type="text/javascript">
 		$(document).ready(function(){
-			if(localStorage["length"] == 0){
-				localStorage["center"] = JSON.stringify("matagalpa");
-			}
+			// Clear out
+			console.log('clear');
+			localStorage.clear();
 			// Set the center id
-			if (JSON.parse(localStorage["center"]) != "matagalpa"){
-				localStorage.clear();
-			}
 			localStorage["center"] = JSON.stringify("matagalpa");
-			
 			// Send to dash
 			window.location = "dash.html";
 			
