@@ -142,7 +142,7 @@ $(document).ready(function(){
 			}
 			else{
 				console.log("offline switch");
-					window.open("imprimir.html");
+					window.open("imprimir.html", "Imprimir", "width=320,height=500");
 					window.location = "dash.html";
 			}
 		}); // End Submit Funtion	
@@ -190,7 +190,6 @@ $(document).ready(function(){
 		$.each(data["codeToId"], function(i, v){
 			code_keys.push(i);
 		});
-		alert(name_keys[0]);
 		$( "#tr_pr_name" ).autocomplete({
 			source: name_keys,
 			close: function(event, ui) {
