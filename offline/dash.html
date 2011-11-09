@@ -9,6 +9,10 @@
 	<script src="./codeToName.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
+			window.applicationCache.addEventListener("downloading",function(){
+				console.log("Downloading");
+				alert("Downloading");
+			});
 			trs = JSON.parse(localStorage["transactions"]);
 			$tbody = $("<tbody>");
 			$.each(trs,function(i,v){

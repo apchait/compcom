@@ -57,17 +57,16 @@ $(document).ready(function(){
 	}
 	setUpLocalStorage();
 	
-	var online = 0;
-	console.log(online);
+	var online = 1;
 	function setUpOnlineOrNot(){
 		// Add a listener to tell us whether we are online or not
-//		window.applicationCache.addEventListener("error", function(e) {
+		window.applicationCache.addEventListener("error", function(e) {
 			console.log("offline!");
 			$("#networkStatus").html("OFFLINE");
 			$("#tr_popover").toggleClass("success");
 			$("#tr_popover").toggleClass("danger");
 			online = 0;
-//		});
+		});
 	}
 	setUpOnlineOrNot();
 	

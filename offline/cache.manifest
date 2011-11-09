@@ -1,8 +1,9 @@
 CACHE MANIFEST
-# rev 75
+# rev 81
 ./recibo.html
 ./imprimir.html
 ./recieveLocalStorage.php
+./codeToName.js
 ../php/connect.php
 ../css/bootstrap/bootstrap.min.css
 ../js/jquery-1.6.2.min.js
