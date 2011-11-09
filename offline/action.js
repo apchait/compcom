@@ -1,9 +1,14 @@
 $(document).ready(function(){
 	console.log("Action!");
-	alert("Hello");
+	//alert("Hello");
+	console.log("Zero's");
 	function setUpPopover(){
 		// Set up popover with localStorage
 		function popoverContent(){
+			if(localStorage.length == 0){
+				console.log("Zero's");
+				return 1;
+			}
 			trs = JSON.parse(localStorage['transactions']);
 			$table = $("<table>").append($("<tr>").append($("<td>").html("Codigo"), $("<td>").html("Folio")));
 			$.each(trs,function(i,v){
@@ -21,6 +26,9 @@ $(document).ready(function(){
 	}	
 	setUpPopover();
 	
+	if(localStorage.length == 0){
+		localStorage["center"] = JSON.stringify("matagalpa");
+	};
 	var centerId = JSON.parse(localStorage["center"]);
 	function setUpFolioNumbers(){
 		if(centerId == "rancho grande"){
@@ -171,7 +179,7 @@ $(document).ready(function(){
 	// Get the a list of producers and ids from the DB and store in producer_hash
 	// Also set up autcomplete with list of names and codes
 	var producer_hash = {};
-	/*$.getJSON('list.json',function(data){
+	$.getJSON('list.json',function(data){
 		// Build producer and code list
 		producer_hash = data;
 		name_keys = [];
@@ -201,5 +209,5 @@ $(document).ready(function(){
 		
 		//console.log(data);
 	});
-	*/
+	
 });
