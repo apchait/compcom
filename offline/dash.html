@@ -1,32 +1,114 @@
 <!DOCTYPE html>
-<!--<html manifest="./cache.manifest">-->
-<html>
+<html manifest="./cache.manifest">
 <head>
 	<meta charset="utf-8">
 	<title>Dashboard</title>
 	<link rel="stylesheet" href="../css/bootstrap/bootstrap.min.css">
 	<script src="../js/jquery-1.6.2.min.js"></script>
 	<script src="../js/jquery-ui-1.8.16.custom.min.js"></script>
-	<script src="./date.js"></script>
+	<script src="./codeToName.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
-			// Check for local market price
-			today = myDate();
-			if(localStorage[today] == undefined){
-				alert("Need a value");
-				localStorage[today] = JSON.stringify("2.50");
-			}
-			else{
-				alert(JSON.parse(localStorage[today]));
-			}
-		})
+			trs = JSON.parse(localStorage["transactions"]);
+			$tbody = $("<tbody>");
+			$.each(trs,function(i,v){
+				codeToName(v["tr_pr_code"],function(name){
+					$a = $("<a>");
+					$row = $("<tr>").append($("<td>").html(v["tr_folio"]),$("<td>").html(name),$("<td>").html(v["tr_pr_code"]),$("<td>").html(v["tr_net_weight"]));
+					$row.data("folio",v["tr_folio"]);
+					$row.click(function(){
+						fillInLeftBarForFolio($(this).data("folio"));
+					});
+					$tbody.append($row);
+				});
+			});
+			$("#trTable").append($tbody);
+		});
 	</script>
 </head>
 <body>
-	<a href="recibo.html"><button>New Recibo</button></a>
-	<button>New Remison</button>
-	<button>New Liquidacion</button><br>
-	Hola<br>
-	Hay # transaction que no se han eviado <button>Envia</button>
+  	<div class="container">
+
+	      <!-- Main hero unit for a primary marketing message or call to action -->
+	      <div class="hero-unit">
+	        <h1>Hola, Matagalpa!</h1>
+	        <p>Beinvendio al sistema Acopio Movil de COOMPROCOM.</p>
+	        <p><a class="btn primary large">Nuevo Recibo »</a>&nbsp<a class="btn primary large">Nueva Remision »</a>&nbsp<a class="btn primary large">Nueva Liquidacion »</a></p>
+	      </div>
+	      <!-- Example row of columns -->
+	      <div class="row">
+	        <div class="span11">
+	       <div class="alert-message block-message error">
+	   <!-- <a class="close" href="#">×</a> -->
+	    <p><strong>No Hay Conexión</strong> Acopio Movil necesita conexión a Internet para enviar los recibos a la base de datos central. Por favor, conectarse a Internet e inténtalo de nuevo.</p>
+	    <div class="alert-actions">
+	       <!-- <a href="#" class="btn small">Lorem ipsum dolor</a>
+	        <a href="#" class="btn small">Sit amet</a> -->
+	    </div>
+	</div>
+	          <h2>Recibos No Enviados <small>a la base de datos central</small></h2>
+	<p>Estos recibos no se han enviados a la base de datos central</p>
+	<!-- TableSorter -->
+	<script>
+	  $(function() {
+//	    $("#trTable").tablesorter({ sortList: [[1,0]] });
+	  });
+	</script>
+	<!-- The table -->
+	<table class="zebra-striped" id="trTable">
+	    <thead>
+	        <tr>
+	            <th class="header">Foilio #</th>
+	            <th class="header headerSortDown">Nombre</th>
+	            <th class="header">Codigo</th>
+	            <th class="header">Peso Neto</th>
+	        </tr>
+	    </thead>
+	</table>
+	<!--
+	<p>Suspendisse pellentesque placerat felis, at commodo tortor porta at. Nulla ut justo a neque sollicitudin scelerisque non in lorem. Phasellus ut magna vitae est bibendum imperdiet. Cras a sollicitudin mauris. Duis ut nulla ipsum. Donec consectetur pellentesque nibh vel adipiscing. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Quisque mattis felis vel metus interdum ut pharetra felis pulvinar. Quisque eu libero neque. Maecenas felis arcu, interdum sit amet tincidunt id, consequat vitae justo. Etiam laoreet rutrum purus in facilisis. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Pellentesque volutpat aliquam cursus. Curabitur ipsum purus, aliquam sed sodales eu, viverra sit amet ipsum. Nunc rhoncus fermentum felis, et sagittis ligula eleifend id.</p>
+
+	<p>Suspendisse pellentesque placerat felis, at commodo tortor porta at. Nulla ut justo a neque sollicitudin scelerisque non in lorem. Phasellus ut magna vitae est bibendum imperdiet. Cras a sollicitudin mauris. Duis ut nulla ipsum. Donec consectetur pellentesque nibh vel adipiscing. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Quisque mattis felis vel metus interdum ut pharetra felis pulvinar. Quisque eu libero neque. Maecenas felis arcu, interdum sit amet tincidunt id, consequat vitae justo. Etiam laoreet rutrum purus in facilisis. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Pellentesque volutpat aliquam cursus. Curabitur ipsum purus, aliquam sed sodales eu, viverra sit amet ipsum. Nunc rhoncus fermentum felis, et sagittis ligula eleifend id.</p>
+
+	
+	<div class="pagination">
+	    <ul>
+	        <li class="prev disabled"><a href="#">← Prev</a></li>
+	        <li><a href="#">1</a></li>
+	        <li><a href="#">2</a></li>
+	        <li><a href="#">3</a></li>
+	        <li><a href="#">4</a></li>
+	        <li><a href="#">5</a></li>
+	        <li class="disabled"><a href="#">...</a></li>
+	        <li><a href="#">98</a></li>
+	        <li><a href="#">99</a></li>
+	        <li><a href="#">100</a></li>
+	        <li><a href="#">101</a></li>
+	        <li><a href="#">102</a></li>
+	        <li class="next"><a href="#">Next →</a></li>
+	    </ul>
+	</div>-->
+	        </div> 
+
+	        <!-- This begins the second column -->
+	        <div class="span5">
+	          <h2>Transacción</h2>
+	           <p>Haga clic en una transacción para ver los detalles</p>
+<!--	<ul class="tabs">
+	  <li class="active"><a href="#">Lorem</a></li>
+	  <li><a href="#">Ipsum</a></li>
+	  <li><a href="#">Dolor</a></li>
+	</ul>
+-->
+
+	       </div>
+	      </div>
+
+	    <!-- Footer -->
+	      <footer>
+	       <!-- <p>© Company 2011</p> -->
+	      </footer>
+
+	    </div>
 </body>
 </html>
