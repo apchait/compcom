@@ -182,6 +182,7 @@ $(document).ready(function(){
 		$.each(data["codeToId"], function(i, v){
 			code_keys.push(i);
 		});
+		alert("Hello");
 		alert(name_keys[0]);
 		$( "#tr_pr_name" ).autocomplete({
 			source: name_keys,
