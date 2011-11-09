@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	console.log("Action!");
-	
+	alert("Hello");
 	function setUpPopover(){
 		// Set up popover with localStorage
 		function popoverContent(){
@@ -171,7 +171,7 @@ $(document).ready(function(){
 	// Get the a list of producers and ids from the DB and store in producer_hash
 	// Also set up autcomplete with list of names and codes
 	var producer_hash = {};
-	$.getJSON('list.json',function(data){
+	/*$.getJSON('list.json',function(data){
 		// Build producer and code list
 		producer_hash = data;
 		name_keys = [];
@@ -182,7 +182,6 @@ $(document).ready(function(){
 		$.each(data["codeToId"], function(i, v){
 			code_keys.push(i);
 		});
-		alert("Hello");
 		alert(name_keys[0]);
 		$( "#tr_pr_name" ).autocomplete({
 			source: name_keys,
@@ -202,5 +201,5 @@ $(document).ready(function(){
 		
 		//console.log(data);
 	});
-
+	*/
 });
