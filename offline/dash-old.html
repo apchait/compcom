@@ -7,11 +7,13 @@
 	<link rel="stylesheet" href="../css/bootstrap/bootstrap.min.css">
 	<script src="../js/jquery-1.6.2.min.js"></script>
 	<script src="../js/jquery-ui-1.8.16.custom.min.js"></script>
+	<link rel="stylesheet" href="../css/bootstrap/bootstrap.min.css">
+	<link rel="stylesheet" href="../css/ui-lightness/jquery-ui-1.8.16.custom.css">
 	<script src="./date.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
 			// Check for local market price
-			today = myDate();
+/*			today = myDate();
 			if(localStorage[today] == undefined){
 				alert("Need a value");
 				localStorage[today] = JSON.stringify("2.50");
@@ -19,6 +21,8 @@
 			else{
 				alert(JSON.parse(localStorage[today]));
 			}
+			*/
+			$("#sub").autocomplete({source:["abac","bbac"]});
 		})
 	</script>
 </head>
@@ -28,5 +32,6 @@
 	<button>New Liquidacion</button><br>
 	Hola<br>
 	Hay # transaction que no se han eviado <button>Envia</button>
+	<input id="sub">
 </body>
 </html>
