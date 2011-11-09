@@ -5,7 +5,6 @@
 	<meta charset="utf-8">
 	<title>Dashboard</title>
 	<link rel="stylesheet" href="../css/bootstrap/bootstrap.min.css">
-	<script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>
 	<script src="../js/jquery-1.6.2.min.js"></script>
 	<script src="../js/jquery-ui-1.8.16.custom.min.js"></script>
 	<script src="./codeToName.js"></script>
@@ -16,7 +15,12 @@
 				console.log("Downloading");
 				alert("Downloading");
 			});
-			trs = JSON.parse(localStorage["transactions"]);
+			if (localStorage["transaction"] != undefined){
+				trs = JSON.parse(localStorage["transactions"]);
+			}
+			else{
+				trs = Array();
+			}
 			$tbody = $("<tbody>");
 			$.each(trs,function(i,v){
 				codeToName(v["tr_pr_code"],function(name){
