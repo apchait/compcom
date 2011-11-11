@@ -15,25 +15,48 @@
 				console.log("Downloading");
 				alert("Downloading");
 			});
-			if (localStorage["transaction"] != undefined){
+			if (localStorage["transactions"] != undefined){
 				trs = JSON.parse(localStorage["transactions"]);
 			}
 			else{
 				trs = Array();
 			}
-			$tbody = $("<tbody>");
+			$table1 = $("#trTable");
 			$.each(trs,function(i,v){
+				console.log('In Trs');
+				console.log(trs);
 				codeToName(v["tr_pr_code"],function(name){
 					$a = $("<a>");
 					$row = $("<tr>").append($("<td>").html(v["tr_folio"]),$("<td>").html(name),$("<td>").html(v["tr_pr_code"]),$("<td>").html(v["tr_net_weight"]));
 					$row.data("folio",v["tr_folio"]);
 					$row.click(function(){
-						fillInLeftBarForFolio($(this).data("folio"));
+						fillInRightBarForFolio($(this).data("folio"));
 					});
-					$tbody.append($row);
+					$table1.append($row);
 				});
 			});
-			$("#trTable").append($tbody);
+			
+			if (localStorage["log"] != undefined){
+				log = JSON.parse(localStorage["log"]);
+			}
+			else{
+				log = Array();
+			}
+			console.log("log", log);
+			$table2 = $("#logTable");
+			$.each(log,function(i,v){
+				console.log("v2", v);
+				codeToName(v["tr_pr_code"],function(name){
+					$a = $("<a>");
+					$row = $("<tr>").append($("<td>").html(v["tr_folio"]),$("<td>").html(name),$("<td>").html(v["tr_pr_code"]),$("<td>").html(v["tr_net_weight"]));
+					$row.data("folio",v["tr_folio"]);
+					$row.click(function(){
+						fillInRightBarForFolio($(this).data("folio"));
+					});
+					$table2.append($row);
+					console.log("row")
+				});
+			});
 		});
 	</script>
 </head>
@@ -57,7 +80,7 @@
 	        <a href="#" class="btn small">Sit amet</a> -->
 	    </div>
 	</div>
-	          <h2>Recibos No Enviados <small>a la base de datos central</small></h2>
+	<h2>Recibos No Enviados <small>a la base de datos central</small></h2>
 	<p>Estos recibos no se han enviados a la base de datos central</p>
 	<!-- TableSorter -->
 	<script>
@@ -67,6 +90,17 @@
 	</script>
 	<!-- The table -->
 	<table class="zebra-striped" id="trTable">
+	    <thead>
+	        <tr>
+	            <th class="header">Foilio #</th>
+	            <th class="header headerSortDown">Nombre</th>
+	            <th class="header">Codigo</th>
+	            <th class="header">Peso Neto</th>
+	        </tr>
+	    </thead>
+	</table>
+	<h2>Recibos Guardados <small>en la base de datos central</small></h2>
+	<table class="zebra-striped" id="logTable">
 	    <thead>
 	        <tr>
 	            <th class="header">Foilio #</th>

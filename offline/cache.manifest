@@ -1,5 +1,6 @@
 CACHE MANIFEST
-# rev 117
+# rev 161
+./dash.html
 ./recibo.html
 ./imprimir.html
 ./recieveLocalStorage.php

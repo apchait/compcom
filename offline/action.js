@@ -26,8 +26,8 @@ $(document).ready(function(){
 	}	
 	setUpPopover();
 	
-	if(localStorage.length == 0){
-		localStorage["center"] = JSON.stringify("matagalpa");
+	if(localStorage["center"] == undefined){
+		localStorage["center"] = JSON.stringify("undefined");
 	};
 	var centerId = JSON.parse(localStorage["center"]);
 	function setUpFolioNumbers(){
@@ -117,15 +117,34 @@ $(document).ready(function(){
 				$.post('./recieveLocalStorage.php',{'transactions' : JSON.parse(localStorage['transactions']), "center": JSON.parse(localStorage['center'])}, function(response){
 					console.log(response);
 					if(response == "success"){
+						
+						// Store it in the log
+						console.log('Storing in log');
+						if (localStorage['log'] == undefined){
+							localStorage['log'] = JSON.stringify([data]);
+						}
+						else{
+							log = JSON.parse(localStorage['log']);
+							console.log('log before', log);
+							$.each(JSON.parse(localStorage['transactions']),function(i,v){
+								log.push(v);
+							});
+							console.log('log after', log);
+							localStorage['log'] = JSON.stringify(log);
+						}
+						
 						console.log('clearing local storage');
 						// Save the folio and last transaction
 						nextFolio = localStorage['nextFolio'];
 						lastTr = JSON.parse(localStorage['lastTransaction']);
+						biglog = JSON.parse(localStorage['log']);
 						localStorage.clear();
 						trArray = [];
+						// Reset the necessary basiscs after clearing
 						localStorage['center'] = JSON.stringify(centerId);
 						localStorage['nextFolio'] = nextFolio;
 						localStorage['lastTransaction'] = JSON.stringify(lastTr);
+						localStorage['log'] = JSON.stringify(biglog);
 					}
 					else if(response != undefined){
 						// Response failed, send an email to us and alert the user
