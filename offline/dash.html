@@ -15,6 +15,19 @@
 				console.log("Downloading");
 				alert("Downloading");
 			});
+			
+			function openTransaction(folioNum){
+				trList = JSON.parse(localStorage["log"]);
+				$.each(trList,function(i,v){
+					if(v["tr_folio"] == folioNum){
+						localStorage["lastTransaction"] = JSON.stringify(v);
+						window.open("imprimir.html", "Imprimir", "width=320,height=500");
+					}
+				});
+			}
+			
+			
+			
 			if (localStorage["transactions"] != undefined){
 				trs = JSON.parse(localStorage["transactions"]);
 			}
@@ -30,8 +43,10 @@
 					$row = $("<tr>").append($("<td>").html(v["tr_folio"]),$("<td>").html(name),$("<td>").html(v["tr_pr_code"]),$("<td>").html(v["tr_net_weight"]));
 					$row.data("folio",v["tr_folio"]);
 					$row.click(function(){
-						fillInRightBarForFolio($(this).data("folio"));
+						openTransaction($(this).data("folio"));
 					});
+					// Set the mouse to look like a pointer
+					$row.css("cursor","pointer");
 					$table1.append($row);
 				});
 			});
@@ -51,10 +66,11 @@
 					$row = $("<tr>").append($("<td>").html(v["tr_folio"]),$("<td>").html(name),$("<td>").html(v["tr_pr_code"]),$("<td>").html(v["tr_net_weight"]));
 					$row.data("folio",v["tr_folio"]);
 					$row.click(function(){
-						fillInRightBarForFolio($(this).data("folio"));
+						openTransaction($(this).data("folio"));
 					});
+					// Set the mouse to look like a pointer
+					$row.css("cursor","pointer");
 					$table2.append($row);
-					console.log("row")
 				});
 			});
 		});
