@@ -35,19 +35,25 @@
 			setUpCenter();
 
 			function setUpMarketPriceModal(){
+				if (localStorage['marketPrices'] != undefined){
+					marketPrices = JSON.parse(localStorage['marketPrices']);
+				}
+				else{
+					marketPrices = {};
+				}
 				$('#myModal').modal({
 					backdrop: "static"
 				});
 				// hide the close button
 				$(".modal-header .close").hide();
 				// Check for local market price
-				var today = myDate();
-				if(localStorage[today] == undefined){
+				var today = String(myDate());
+				if(marketPrices[today] == undefined){
 					// present modal
 					$('#myModal').modal('show');
 				}
 				else{
-					console.log(JSON.parse(localStorage[today]));
+					console.log(marketPrices[today]);
 				}
 				
 				$("#submitMarketPrice").click(function(){
@@ -58,7 +64,9 @@
 						console.log("Not a number!");
 					}
 					else{
-						localStorage[today] = JSON.stringify(val);
+						marketPrices[today] = val;
+						localStorage["marketPrices"] = JSON.stringify(marketPrices);
+						console.log('price stored', JSON.parse(localStorage["marketPrices"])[today]);
 						$('#myModal').modal("hide");
 					}
 				});
@@ -82,30 +90,30 @@
 					}
 				});
 			}
-		
-			if (localStorage["transactions"] != undefined){
+			
+			if (localStorage["transactions"] != undefined && localStorage["transactions"] != "[]"){
 				trs = JSON.parse(localStorage["transactions"]);
-		
-			$table1 = $("#trTable");
-			$.each(trs,function(i,v){
-				console.log('In Trs');
-				console.log(trs);
-				codeToName(v["tr_pr_code"],function(name){
-					$a = $("<a>");
-					$row = $("<tr>").append($("<td>").html(v["tr_folio"]),$("<td>").html(name),$("<td>").html(v["tr_pr_code"]),$("<td>").html(v["tr_net_weight"]));
-					$row.data("folio",v["tr_folio"]);
-					$row.click(function(){
-						openTransaction($(this).data("folio"));
+				console.log('Not Empty?');
+				$table1 = $("#trTable");
+				$.each(trs,function(i,v){
+					console.log('In Trs');
+					console.log(trs);
+					codeToName(v["tr_pr_code"],function(name){
+						$a = $("<a>");
+						$row = $("<tr>").append($("<td>").html(v["tr_folio"]),$("<td>").html(name),$("<td>").html(v["tr_pr_code"]),$("<td>").html(v["tr_net_weight"]));
+						$row.data("folio",v["tr_folio"]);
+						$row.click(function(){
+							openTransaction($(this).data("folio"));
+						});
+						// Set the mouse to look like a pointer
+						$row.css("cursor","pointer");
+						$table1.append($row);
 					});
-					// Set the mouse to look like a pointer
-					$row.css("cursor","pointer");
-					$table1.append($row);
 				});
-			});
-		}
-		else{
-			$("#trTableSection").hide();
-		}
+			}
+			else{
+				$("#trTableSection").hide();
+			}
 			
 			if (localStorage["log"] != undefined){
 				log = JSON.parse(localStorage["log"]);
@@ -113,10 +121,8 @@
 			else{
 				log = Array();
 			}
-			console.log("log", log);
 			$table2 = $("#logTable");
 			$.each(log,function(i,v){
-				console.log("v2", v);
 				codeToName(v["tr_pr_code"],function(name){
 					$a = $("<a>");
 					$row = $("<tr>").append($("<td>").html(v["tr_folio"]),$("<td>").html(name),$("<td>").html(v["tr_pr_code"]),$("<td>").html(v["tr_net_weight"]));
@@ -139,7 +145,7 @@
 	      <div class="hero-unit">
 	        <h1>Hola, <span id="center"></span>!</h1>
 	        <p>Beinvendio al sistema Acopio Movil de COOMPROCOM.</p>
-	        <p><a href="recibo.html" class="btn primary large">Nuevo Recibo »</a>&nbsp<a class="btn primary large">Nueva Remision »</a>&nbsp<a class="btn primary large">Nueva Liquidacion »</a></p>
+	        <p><a href="recibo.html" class="btn primary large">Nuevo Recibo »</a>&nbsp;<a class="btn primary large">Nueva Remision »</a>&nbsp;<a class="btn primary large">Nueva Liquidacion »</a></p>
 	      </div>
 	      <!-- Example row of columns -->
 	      <div class="row">

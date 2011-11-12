@@ -117,7 +117,6 @@ $(document).ready(function(){
 				$.post('./recieveLocalStorage.php',{'transactions' : JSON.parse(localStorage['transactions']), "center": JSON.parse(localStorage['center'])}, function(response){
 					console.log(response);
 					if(response == "success"){
-						
 						// Store it in the log
 						console.log('Storing in log');
 						if (localStorage['log'] == undefined){
@@ -135,7 +134,7 @@ $(document).ready(function(){
 						
 						console.log('clearing local storage');
 						// Save the folio and last transaction
-						nextFolio = localStorage['nextFolio'];
+						/*nextFolio = localStorage['nextFolio'];
 						lastTr = JSON.parse(localStorage['lastTransaction']);
 						biglog = JSON.parse(localStorage['log']);
 						localStorage.clear();
@@ -145,6 +144,10 @@ $(document).ready(function(){
 						localStorage['nextFolio'] = nextFolio;
 						localStorage['lastTransaction'] = JSON.stringify(lastTr);
 						localStorage['log'] = JSON.stringify(biglog);
+						*/
+						if (localStorage['transactions'] != undefined){
+							localStorage['transactions'] = JSON.stringify([]);
+						}
 					}
 					else if(response != undefined){
 						// Response failed, send an email to us and alert the user

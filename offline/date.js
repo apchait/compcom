@@ -8,5 +8,5 @@ function myDate(){
 	if(month < 10){
 		month = "0" + String(month);
 	}
-	return String(d.getFullYear()) + String(month) + String(day);
+	return String(String(d.getFullYear()) + String(month) + String(day));
 }
