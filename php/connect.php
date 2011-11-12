@@ -15,7 +15,7 @@ function connectToDb(){
 }
 
 function runQuery($link, $query){
-	$result = mysql_query($query,$link) or die(mysql_errno() . mysql_error());
+	$result = mysql_query($query,$link) or die(mysql_errno() . ' ' .  mysql_error() . $query);
 	return $result;
 }
 
