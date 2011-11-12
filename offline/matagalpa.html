@@ -8,14 +8,11 @@
 
 	<script type="text/javascript">
 		$(document).ready(function(){
-			// Clear out
-			console.log('clear');
-			localStorage.clear();
+			// Backup local storage
 			// Set the center id
 			localStorage["center"] = JSON.stringify("matagalpa");
 			// Send to dash
 			window.location = "dash.html";
-			
 		});
 	</script>
 </head>

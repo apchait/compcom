@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# rev 170
+# rev 172
 ./dash.html
 ./recibo.html
 ./imprimir.html
@@ -17,6 +17,7 @@ CACHE MANIFEST
 ../js/bootstrap-twipsy.js
 ../js/bootstrap-popover.js
 ../js/bootstrap-buttons.js
+../js/bootstrap-modal.js
 ../css/images/compcom_logo.png
 
 ../css/ui-lightness/jquery-ui-1.8.16.custom.css

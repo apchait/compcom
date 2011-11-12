@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html manifest="./cache.manifest">
+<!-- <html manifest="./cache.manifest"> -->
+<html>
 
 <head>
 	<meta charset="utf-8">
@@ -7,14 +8,70 @@
 	<link rel="stylesheet" href="../css/bootstrap/bootstrap.min.css">
 	<script src="../js/jquery-1.6.2.min.js"></script>
 	<script src="../js/jquery-ui-1.8.16.custom.min.js"></script>
+	<script src="../js/bootstrap-modal.js"></script>
 	<script src="./codeToName.js"></script>
 	<script src="./dash.js"></script>
+	<script src="./date.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
 			window.applicationCache.addEventListener("downloading",function(){
 				console.log("Downloading");
 				alert("Downloading");
 			});
+			
+			// Get the center id
+			function setUpCenter(){
+				if (localStorage["center"] != undefined){
+					center = JSON.parse(localStorage["center"]);
+				}
+				else{
+					center = "undefined";
+				}
+				// Capitalize first letter
+				center = center.charAt(0).toUpperCase() + center.slice(1);
+				$("#center").html(center);
+				console.log("center", center);
+			}
+			setUpCenter();
+
+			function setUpMarketPriceModal(){
+				$('#myModal').modal({
+					backdrop: "static"
+				});
+				// hide the close button
+				$(".modal-header .close").hide();
+				// Check for local market price
+				var today = myDate();
+				if(localStorage[today] == undefined){
+					// present modal
+					$('#myModal').modal('show');
+				}
+				else{
+					console.log(JSON.parse(localStorage[today]));
+				}
+				
+				$("#submitMarketPrice").click(function(){
+					console.log('Hello');
+					// Make sure value is a float
+					val = $("#marketPriceInput").val();
+					if (isNaN(val) || val == ""){
+						console.log("Not a number!");
+					}
+					else{
+						localStorage[today] = JSON.stringify(val);
+						$('#myModal').modal("hide");
+					}
+				});
+				
+				$("#marketPriceForm").submit(function(){
+					$("#submitMarketPrice").click();
+					return false;
+				});
+			}
+			setUpMarketPriceModal();
+			
+			
+			
 			
 			function openTransaction(folioNum){
 				trList = JSON.parse(localStorage["log"]);
@@ -25,15 +82,10 @@
 					}
 				});
 			}
-			
-			
-			
+		
 			if (localStorage["transactions"] != undefined){
 				trs = JSON.parse(localStorage["transactions"]);
-			}
-			else{
-				trs = Array();
-			}
+		
 			$table1 = $("#trTable");
 			$.each(trs,function(i,v){
 				console.log('In Trs');
@@ -50,6 +102,10 @@
 					$table1.append($row);
 				});
 			});
+		}
+		else{
+			$("#trTableSection").hide();
+		}
 			
 			if (localStorage["log"] != undefined){
 				log = JSON.parse(localStorage["log"]);
@@ -81,7 +137,7 @@
 
 	      <!-- Main hero unit for a primary marketing message or call to action -->
 	      <div class="hero-unit">
-	        <h1>Hola, Matagalpa!</h1>
+	        <h1>Hola, <span id="center"></span>!</h1>
 	        <p>Beinvendio al sistema Acopio Movil de COOMPROCOM.</p>
 	        <p><a href="recibo.html" class="btn primary large">Nuevo Recibo »</a>&nbsp<a class="btn primary large">Nueva Remision »</a>&nbsp<a class="btn primary large">Nueva Liquidacion »</a></p>
 	      </div>
@@ -96,8 +152,10 @@
 	        <a href="#" class="btn small">Sit amet</a> -->
 	    </div>
 	</div>
+	<section id="trTableSection">
 	<h2>Recibos No Enviados <small>a la base de datos central</small></h2>
-	<p>Estos recibos no se han enviados a la base de datos central</p>
+	<p>Estos recibos no se han enviados a la base de datos central<br>
+	Haga clic en una transacción para ver los detalles</p>
 	<!-- TableSorter -->
 	<script>
 	  $(function() {
@@ -115,7 +173,10 @@
 	        </tr>
 	    </thead>
 	</table>
+	</section><!-- trTableSection  -->
+	<section id="logTableSection">
 	<h2>Recibos Guardados <small>en la base de datos central</small></h2>
+	<p>Haga clic en una transacción para ver los detalles</p>
 	<table class="zebra-striped" id="logTable">
 	    <thead>
 	        <tr>
@@ -126,6 +187,7 @@
 	        </tr>
 	    </thead>
 	</table>
+	</section><!-- logTableSection -->
 	<!--
 	<p>Suspendisse pellentesque placerat felis, at commodo tortor porta at. Nulla ut justo a neque sollicitudin scelerisque non in lorem. Phasellus ut magna vitae est bibendum imperdiet. Cras a sollicitudin mauris. Duis ut nulla ipsum. Donec consectetur pellentesque nibh vel adipiscing. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Quisque mattis felis vel metus interdum ut pharetra felis pulvinar. Quisque eu libero neque. Maecenas felis arcu, interdum sit amet tincidunt id, consequat vitae justo. Etiam laoreet rutrum purus in facilisis. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Pellentesque volutpat aliquam cursus. Curabitur ipsum purus, aliquam sed sodales eu, viverra sit amet ipsum. Nunc rhoncus fermentum felis, et sagittis ligula eleifend id.</p>
 
@@ -163,7 +225,29 @@
 -->
 
 	       </div>
-	      </div>
+	
+		<div id="myModal" class="modal hide fade" style="display: none; ">
+			<div class="modal-header">
+				<a href="#" class="close">×</a>
+				<h3>Modal Heading</h3>
+			</div>
+			<div class="modal-body">
+				<form id="marketPriceForm">
+				<p><label style="width:150px; margin-right:20px">Precio de Mercado Local: </label>
+					<input id="marketPriceInput"/>
+				</p>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button id="submitMarketPrice" class="btn primary" type="submit">Primary</button>
+				<!-- <a href="#" class="btn secondary">Secondary</a> -->
+			</div>
+		</div><!-- modal -->
+	</div><!-- container -->
+
+
+
+
 
 	    <!-- Footer -->
 	      <footer>
