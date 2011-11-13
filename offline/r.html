@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Recibo</title>
+	<link rel="stylesheet" href="../css/bootstrap/bootstrap.min.css" type="text/css">
+	<script src="../js/jquery-1.6.2.min.js"></script>
+	<script src="../js/jquery-ui-1.8.16.custom.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			console.log("raincoat");
+			function producerSection(){
+				producerInfo = {"tr_pr_code":"Codigo","tr_pr_name":"Nombre","tr_date":"Fecha","pr_community":"Comite","tr_center":"Centro de Acopio","tr_time":"Hora De Entrega"};
+				$.each(producerInfo, function(key,name){
+					$div = $("<div>").addClass("clearfix");
+					$label = $("<label>").attr("for",key);
+					$label.html(name);
+					$inputDiv = $("<div>").addClass("input");
+					$input = $("<input>").addClass("medium");
+					$input.attr("id",key);
+					$input.attr("name",name);
+					$input.attr("size",30);
+					$input.attr("type","text");
+					$inputDiv.append($input);
+					$div.append($label);
+					$div.append($inputDiv);
+					
+					// add savedb to the ones that should be saved
+					
+					$("#producerFields").append($div);
+				});
+			}
+
+			function fillSection(sectionid, list, size, length){
+				$.each(list, function(key,name){
+					$div = $("<div>").addClass("clearfix");
+					$label = $("<label>").attr("for",key);
+					$label.html(name);
+					$inputDiv = $("<div>").addClass("input");
+					$input = $("<input>").addClass(length);
+					$input.attr("id",key);
+					$input.attr("name",name);
+					$input.attr("size",size);
+					$input.attr("type","text");
+					// add savedb to the ones that should be saved
+					if(key != "tr_pr_name"){
+						$input.addClass("savedb");
+					}
+					$inputDiv.append($input);
+					$div.append($label);
+					$div.append($inputDiv);
+					$(sectionid).append($div);
+				});
+			}
+			producerInfo = {"tr_pr_code":"Codigo","tr_pr_name":"Nombre","tr_date":"Fecha","pr_community":"Comite","tr_center":"Centro de Acopio","tr_time":"Hora De Entrega"};
+			fillSection("#producerFields", producerInfo, 30, "medium");
+			trInfo = {"tr_lot_num":"N Lote","tr_sack_num":"N Saco","tr_total_weight":"Peso Bruto","tr_tare":"Tara","tr_net_weight":"Peso Neto","tr_quality":"Calidad"};
+			fillSection("#trFields", trInfo, 30, "mini");
+			qualityInfo = {"tr_quality_sf":"S/F","tr_quality_mordido":"Mordido","tr_quality_pelado":"Pelado","tr_quality_verde":"Verde","tr_quality_broca":"Broca","tr_quality_moho":"Moho","tr_quality_gqmd":"G. QMD","tr_quality_total":"Total"}
+			fillSection("#qualityFields", qualityInfo, 30, "mini");
+		});
+	</script>
+</head>
+<body>
+<!--	<section id="logoSection">
+	</section> --><!-- logoSection -->
+	
+	<div class="container">
+	    <div class="sidebar">
+			<div class="span4" style="background-color:#BBD8E9">
+				<form action="" class="form-stacked">
+					<fieldset id="producerFields">
+						<span class="label success">Productor</span>
+					</fieldset>
+				</form>
+				</div>
+		</div><!-- sidebar -->
+		
+		<div class="content">
+			<div class="span9" style="background-color:#DCEAF4">
+				<div class="row">
+					<div class="span2">
+						<section id="trInformationSection">
+							<form action="" class="form-stacked">
+								<fieldset id="trFields">
+									<span class="label success">Peso</span>
+								</fieldset>
+							</form>
+						</section><!-- trInformationSection -->
+					</div><!-- span3 -->
+					<div class="span2">
+						<section id="qualitySection">
+							<form action="" class="form-stacked">
+								<fieldset id="qualityFields">
+									<span class="label success">Calidad</span>
+								</fieldset>
+							</form>
+						</section><!-- qualitySection -->
+					</div><!-- span3 -->
+					<div class="span4">
+						<form action="" class="form-stacked">
+							<fieldset id="trFields">
+								<span class="label success" syle="font-size:13px">Observaciones</span>
+								<div class="clearfix">
+									<div class="input">
+										<label for="tr_observations">Observaciones</label>
+										<textarea class="savedb" id="tr_observations" name="Observaciones" rows="9"></textarea>
+									</div>
+								</div><!-- clearfix -->
+							</fieldset>
+							<button type="submit" class="btn primary">Enviar</button>
+						<form>
+					</div><!-- span6 -->
+				</div><!-- row -->
+		<!--		<div class="actions">
+					<button type="submit" class="btn primary">Save changes</button>&nbsp;<button type="reset" class="btn">Cancel</button>
+				</div> -->
+			</div><!-- span12 -- >
+		</div><!-- content -->
+</body>
+</html>

@@ -1,7 +1,5 @@
 $(document).ready(function(){
 	console.log("Action!");
-	//alert("Hello");
-	console.log("Zero's");
 	function setUpPopover(){
 		// Set up popover with localStorage
 		function popoverContent(){
@@ -26,10 +24,24 @@ $(document).ready(function(){
 	}	
 	setUpPopover();
 	
-	if(localStorage["center"] == undefined){
-		localStorage["center"] = JSON.stringify("undefined");
-	};
+	function setUpCenterAndCheckForPrice(){
+		if(localStorage['marketPrices'] != undefined){
+			if(JSON.parse(localStorage['marketPrices'])[myDate()] == undefined){
+				console.log("no price for today");
+				window.location = "dash.html";
+			}
+		}
+		else{
+			window.location = "dash.html";
+		}
+		
+		if(localStorage["center"] == undefined){
+			localStorage["center"] = JSON.stringify("undefined");
+		};
+	}
+	setUpCenterAndCheckForPrice();
 	var centerId = JSON.parse(localStorage["center"]);
+	
 	function setUpFolioNumbers(){
 		if(centerId == "rancho grande"){
 			folioStart = 0;
@@ -145,6 +157,7 @@ $(document).ready(function(){
 						localStorage['lastTransaction'] = JSON.stringify(lastTr);
 						localStorage['log'] = JSON.stringify(biglog);
 						*/
+						// clear offline 'transactions'
 						if (localStorage['transactions'] != undefined){
 							localStorage['transactions'] = JSON.stringify([]);
 						}
@@ -152,9 +165,16 @@ $(document).ready(function(){
 					else if(response != undefined){
 						// Response failed, send an email to us and alert the user
 						alert("Error: " + response);
-						// Re-activate submit button
-						$("#submit").button("reset");
-						return 1;
+						// Let them click ok, store the error, it has already been added to localStorage 'transactions' for offline storage, so send them to dashboard
+						if (localStorage["errorLog"] != undefined){
+							errorLog = JSON.parse(localStorage["errorLog"]);
+						}
+						else{
+							errorLog = [];
+						}
+						d = new Date();
+						errorLog.push({"message":response, "time": d});
+						localStorage["errorLog"] = JSON.stringify(errorLog); 
 					}
 					console.log('Changing Location');
 					console.log("Open new window");

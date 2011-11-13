@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <!-- <html manifest="./cache.manifest"> -->
 <html>
-
 <head>
 	<meta charset="utf-8">
 	<title>Dashboard</title>
@@ -14,10 +13,47 @@
 	<script src="./date.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
-			window.applicationCache.addEventListener("downloading",function(){
-				console.log("Downloading");
-				alert("Downloading");
-			});
+			
+			function setUpCacheUpdateReload(){
+				// Old style with error indicating offline or not
+				window.applicationCache.addEventListener("downloading",function(){
+					if(confirm("Do you want to reload?")){
+						window.location.reload();
+					}
+				});
+				
+				// New style with Fallback in manifest
+				applicationCache.onUpdateReady = function(){
+					// Cache manifest has changed, alert and reload
+					if(confirm("Do you want to reload?")){
+						window.location.reload();
+					}
+					
+					function testOnline(fn){
+						var script = document.createElement('script');
+						script.src = '../js/online.js';
+						// alias the setONline fn to the new fn we passed in
+						window.setOnline = function(online){
+							document.body.removeChild(script);
+							fn(online);
+						};
+						// attach script node trigger the code to run
+						document.body.appendChild(script);
+					}
+					console.log('testing');
+					testOnline(function(online){
+						console.log('in test');
+						if(online){
+							applicationCache.update();
+							console.log("Crazy Online");
+						}
+						else{
+							console.log("Crazy Offline");
+						}
+					});
+				}
+			}
+			setUpCacheUpdateReload();
 			
 			// Get the center id
 			function setUpCenter(){
@@ -77,27 +113,50 @@
 				});
 			}
 			setUpMarketPriceModal();
-			
-			
-			
-			
-			function openTransaction(folioNum){
-				trList = JSON.parse(localStorage["log"]);
-				$.each(trList,function(i,v){
-					if(v["tr_folio"] == folioNum){
-						localStorage["lastTransaction"] = JSON.stringify(v);
-						window.open("imprimir.html", "Imprimir", "width=320,height=500");
-					}
-				});
-			}
-			
-			if (localStorage["transactions"] != undefined && localStorage["transactions"] != "[]"){
-				trs = JSON.parse(localStorage["transactions"]);
-				console.log('Not Empty?');
-				$table1 = $("#trTable");
-				$.each(trs,function(i,v){
-					console.log('In Trs');
-					console.log(trs);
+				
+			function setUpTables(){
+				function openTransaction(folioNum){
+					trList = JSON.parse(localStorage["log"]);
+					$.each(trList,function(i,v){
+						if(v["tr_folio"] == folioNum){
+							localStorage["lastTransaction"] = JSON.stringify(v);
+							window.open("imprimir.html", "Imprimir", "width=320,height=500");
+						}
+					});
+				}
+
+				if (localStorage["transactions"] != undefined && localStorage["transactions"] != "[]"){
+					trs = JSON.parse(localStorage["transactions"]);
+					console.log('Not Empty?');
+					$table1 = $("#trTable");
+					$.each(trs,function(i,v){
+						console.log('In Trs');
+						console.log(trs);
+						codeToName(v["tr_pr_code"],function(name){
+							$a = $("<a>");
+							$row = $("<tr>").append($("<td>").html(v["tr_folio"]),$("<td>").html(name),$("<td>").html(v["tr_pr_code"]),$("<td>").html(v["tr_net_weight"]));
+							$row.data("folio",v["tr_folio"]);
+							$row.click(function(){
+								openTransaction($(this).data("folio"));
+							});
+							// Set the mouse to look like a pointer
+							$row.css("cursor","pointer");
+							$table1.append($row);
+						});
+					});
+				}
+				else{
+					$("#trTableSection").hide();
+				}
+
+				if (localStorage["log"] != undefined){
+					log = JSON.parse(localStorage["log"]);
+				}
+				else{
+					log = Array();
+				}
+				$table2 = $("#logTable");
+				$.each(log,function(i,v){
 					codeToName(v["tr_pr_code"],function(name){
 						$a = $("<a>");
 						$row = $("<tr>").append($("<td>").html(v["tr_folio"]),$("<td>").html(name),$("<td>").html(v["tr_pr_code"]),$("<td>").html(v["tr_net_weight"]));
@@ -107,34 +166,11 @@
 						});
 						// Set the mouse to look like a pointer
 						$row.css("cursor","pointer");
-						$table1.append($row);
+						$table2.append($row);
 					});
 				});
 			}
-			else{
-				$("#trTableSection").hide();
-			}
-			
-			if (localStorage["log"] != undefined){
-				log = JSON.parse(localStorage["log"]);
-			}
-			else{
-				log = Array();
-			}
-			$table2 = $("#logTable");
-			$.each(log,function(i,v){
-				codeToName(v["tr_pr_code"],function(name){
-					$a = $("<a>");
-					$row = $("<tr>").append($("<td>").html(v["tr_folio"]),$("<td>").html(name),$("<td>").html(v["tr_pr_code"]),$("<td>").html(v["tr_net_weight"]));
-					$row.data("folio",v["tr_folio"]);
-					$row.click(function(){
-						openTransaction($(this).data("folio"));
-					});
-					// Set the mouse to look like a pointer
-					$row.css("cursor","pointer");
-					$table2.append($row);
-				});
-			});
+			setUpTables();
 		});
 	</script>
 </head>
@@ -172,7 +208,7 @@
 	<table class="zebra-striped" id="trTable">
 	    <thead>
 	        <tr>
-	            <th class="header">Foilio #</th>
+	            <th class="header">Folio #</th>
 	            <th class="header headerSortDown">Nombre</th>
 	            <th class="header">Codigo</th>
 	            <th class="header">Peso Neto</th>
@@ -186,7 +222,7 @@
 	<table class="zebra-striped" id="logTable">
 	    <thead>
 	        <tr>
-	            <th class="header">Foilio #</th>
+	            <th class="header">Folio #</th>
 	            <th class="header headerSortDown">Nombre</th>
 	            <th class="header">Codigo</th>
 	            <th class="header">Peso Neto</th>
@@ -235,7 +271,7 @@
 		<div id="myModal" class="modal hide fade" style="display: none; ">
 			<div class="modal-header">
 				<a href="#" class="close">×</a>
-				<h3>Modal Heading</h3>
+				<h3 id="priceHeader">Precio de Mercado Local Hoy</h3>
 			</div>
 			<div class="modal-body">
 				<form id="marketPriceForm">

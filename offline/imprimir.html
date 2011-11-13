@@ -18,7 +18,7 @@
 				var $wrap = $('<div>').attr('id', 'tableWrap');
 				var $tbl = $('<table>').attr('id', 'basicTable');
 				$tbl.attr('class', 'zebra-striped');
-				$tbl.attr('style', 'width:300px');
+				$tbl.css('width', '300px','font-size','10px');
 				// First add the name
 				$tbl.append($('<tr>').append($('<td>').text("NOMBRE"), $('<td>').text(name)));
 				$.each(lastTr, function(i,v){

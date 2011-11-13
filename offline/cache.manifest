@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# rev 172
+# rev 182
 ./dash.html
 ./recibo.html
 ./imprimir.html
@@ -8,6 +8,7 @@ CACHE MANIFEST
 ./dash.js
 ./action.js
 ./list.json
+./date.js
 ../php/connect.php
 ../css/bootstrap/bootstrap.min.css
 ../js/firebug-lite/firebug-lite.js
@@ -38,3 +39,6 @@ CACHE MANIFEST
 
 NETWORK:
 ./matagalpa.html
+
+FALLBACK:
+../js/online.js ../js/offline.js
