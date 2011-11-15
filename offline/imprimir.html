@@ -9,7 +9,7 @@
 	<script type="text/javascript">
 		$(document).ready(function(){			
 			// Set up a dictionary of db names to plain english
-			dict = {"tr_folio":"FOLIO","tr_pr_code":"CODIGO", "tr_date":"FECHA", "tr_time":"HORA","tr_center":"CENTRO", "tr_lot_num":"NUM LOTE", "tr_sack_num":"NUM SACO", "tr_total_weight":"PESO BRUTO", "tr_net_weight":"PESO NETO", "tr_quality":"CALIDAD", "tr_quality_sf":"SF", "tr_quality_mordido":"MORDIDO", "tr_quality_pelado":"PELADO", "tr_quality_verde":"VERDE", "tr_quality_broca":"BROVA", "tr_quality_moho":"MOHO", "tr_quality_gqmd":"GQMD", "tr_quality_total":"CALIDAD TOTAL", "tr_observations":"OBSERVACIONES", "tr_reciever":"RECIDO POR","tr_certification":"ORGANICO"};
+			dict = {"tr_folio":"FOLIO","tr_pr_code":"CODIGO", "tr_date":"FECHA", "tr_time":"HORA","tr_center":"CENTRO", "tr_lot_num":"NUM LOTE", "tr_sack_num":"NUM SACO", "tr_total_weight":"PESO BRUTO", "tr_tare":"TARA","tr_net_weight":"PESO NETO", "tr_quality":"CALIDAD", "tr_quality_sf":"SF", "tr_quality_mordido":"MORDIDO", "tr_quality_pelado":"PELADO", "tr_quality_verde":"VERDE", "tr_quality_broca":"BROVA", "tr_quality_moho":"MOHO", "tr_quality_gqmd":"GQMD", "tr_quality_total":"CALIDAD TOTAL", "tr_observations":"OBSERVACIONES", "tr_receiver":"RECIDO POR","tr_certification":"ORGANICO"};
 			lastTr = JSON.parse(localStorage["lastTransaction"]);
 			console.log(lastTr);
 			$.getJSON('list.json',function(data){
