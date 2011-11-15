@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<!-- <html manifest="./cache.manifest"> -->
-<html>
+<html manifest="./cache.manifest">
 <head>
 	<meta charset="utf-8">
 	<title>Dashboard</title>
@@ -105,9 +104,9 @@
 							marketPrices[today][$(v).attr('id')] = $(v).val();
 						});
 						console.log(marketPrices);
-						//localStorage["marketPrices"] = JSON.stringify(marketPrices);
-						//console.log('price stored', JSON.parse(localStorage["marketPrices"])[today]);
-						//$('#myModal').modal("hide");
+						localStorage["marketPrices"] = JSON.stringify(marketPrices);
+						console.log('price stored', JSON.parse(localStorage["marketPrices"])[today]);
+						$('#myModal').modal("hide");
 					}
 					
 				});

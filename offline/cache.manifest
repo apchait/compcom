@@ -1,7 +1,8 @@
 CACHE MANIFEST
-# rev 182
+# rev 201
 ./dash.html
 ./recibo.html
+./r.html
 ./imprimir.html
 ./recieveLocalStorage.php
 ./codeToName.js
