@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html manifest="./cache.manifest">
+
 <head>
 	<meta charset="utf-8">
 	<title>Dashboard</title>
@@ -52,7 +53,7 @@
 					});
 				}
 			}
-			setUpCacheUpdateReload();
+		//	setUpCacheUpdateReload();
 			
 			// Get the center id
 			function setUpCenter(){
@@ -132,6 +133,7 @@
 				if (localStorage["transactions"] != undefined && localStorage["transactions"] != "[]"){
 					trs = JSON.parse(localStorage["transactions"]);
 					console.log('Not Empty?');
+					
 					$table1 = $("#trTable");
 					$.each(trs,function(i,v){
 						console.log('In Trs');
@@ -151,6 +153,7 @@
 				}
 				else{
 					$("#trTableSection").hide();
+					$("#sendReceipts").hide();
 				}
 
 				if (localStorage["log"] != undefined){
@@ -175,6 +178,75 @@
 				});
 			}
 			setUpTables();
+				function setUpSubmitButton(){
+					// Gather values from the form and submit to database
+					$('#sendReceipts').click(function(){
+						online = 1;
+						if(online){
+							$.post('./recieveLocalStorage.php',{'transactions' : JSON.parse(localStorage['transactions']), "center": JSON.parse(localStorage['center'])}, function(response){
+								console.log(response);
+								if(response == "success"){
+									// Store it in the log
+									console.log('Storing in log');
+									if (localStorage['log'] == undefined){
+										localStorage['log'] = JSON.stringify([data]);
+									}
+									else{
+										log = JSON.parse(localStorage['log']);
+										console.log('log before', log);
+										$.each(JSON.parse(localStorage['transactions']),function(i,v){
+											log.push(v);
+										});
+										console.log('log after', log);
+										localStorage['log'] = JSON.stringify(log);
+									}
+
+									console.log('clearing local storage');
+									// Save the folio and last transaction
+									/*nextFolio = localStorage['nextFolio'];
+									lastTr = JSON.parse(localStorage['lastTransaction']);
+									biglog = JSON.parse(localStorage['log']);
+									localStorage.clear();
+									trArray = [];
+									// Reset the necessary basiscs after clearing
+									localStorage['center'] = JSON.stringify(centerId);
+									localStorage['nextFolio'] = nextFolio;
+									localStorage['lastTransaction'] = JSON.stringify(lastTr);
+									localStorage['log'] = JSON.stringify(biglog);
+									*/
+									// clear offline 'transactions'
+									if (localStorage['transactions'] != undefined){
+										localStorage['transactions'] = JSON.stringify([]);
+									}
+								}
+								else if(response != undefined){
+									// Response failed, send an email to us and alert the user
+									alert("Error: " + response);
+									// Let them click ok, store the error, it has already been added to localStorage 'transactions' for offline storage, so send them to dashboard
+									if (localStorage["errorLog"] != undefined){
+										errorLog = JSON.parse(localStorage["errorLog"]);
+									}
+									else{
+										errorLog = [];
+									}
+									d = new Date();
+									errorLog.push({"message":response, "time": d});
+									localStorage["errorLog"] = JSON.stringify(errorLog); 
+								}
+								console.log('Changing Location');
+								console.log("Open new window");
+								//window.open("imprimir.html", "Imprimir", "width=320,height=500");
+								window.location = "dash.html";
+							});
+						}
+						else{
+							console.log("offline switch");
+								//window.open("imprimir.html", "Imprimir", "width=320,height=500");
+								window.location = "dash.html";
+						}
+					}); // End Submit Funtion	
+				}
+				setUpSubmitButton();
 		});
 	</script>
 </head>
@@ -199,6 +271,7 @@
 	    </div>
 	</div>
 	<section id="trTableSection">
+		<button class="btn success" id="sendReceipts">Enviar Recibos</button>
 	<h2>Recibos No Enviados <small>a la base de datos central</small></h2>
 	<p>Estos recibos no se han enviados a la base de datos central<br>
 	Haga clic en una transacción para ver los detalles</p>

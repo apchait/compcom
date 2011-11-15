@@ -11,6 +11,7 @@ $(document).ready(function(){
 			$("#networkStatus").html("OFFLINE");
 			online = 0;
 			$("#onlineOrNot").show();
+			$("#sendReceipts").hide();
 		});
 	}
 	setUpOnlineOrNot();
