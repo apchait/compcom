@@ -52,6 +52,15 @@
 				$("#tr_center").autocomplete({
 					source: ["COOMPROCOM","Wibuse","Ilipos","Rancho Grande","San Jose de los Remates"]
 				});
+				// Set up time
+				var currentTime = new Date()
+				var hours = currentTime.getHours()
+				var minutes = currentTime.getMinutes()
+				if (minutes < 10){
+					minutes = "0" + minutes;
+				}
+				$("#tr_time").val(hours+":"+minutes);
+				
 			}
 			setUpAutocompletes();
 			function setUpDatePicker(){
