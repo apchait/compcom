@@ -31,7 +31,8 @@ CREATE TABLE transaction(
 	tr_quality_gqmd DECIMAL,
 	tr_quality_total DECIMAL,
 	tr_observations VARCHAR(40),
-	tr_reciever VARCHAR(40)
+	tr_reciever VARCHAR(40),
+	tr_certification VARCHAR(40)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;  
 
 LOAD DATA LOCAL INFILE 'producerlist.csv' 

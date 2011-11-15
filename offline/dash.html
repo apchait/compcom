@@ -120,14 +120,17 @@
 			setUpMarketPriceModal();
 				
 			function setUpTables(){
-				function openTransaction(folioNum){
-					trList = JSON.parse(localStorage["log"]);
+				function openTransaction(folioNum,mode){
+					// mode is either log or transactions for on or offline
+					trList = JSON.parse(localStorage[mode]);
 					$.each(trList,function(i,v){
 						if(v["tr_folio"] == folioNum){
 							localStorage["lastTransaction"] = JSON.stringify(v);
 							window.open("imprimir.html", "Imprimir", "width=320,height=500");
 						}
 					});
+					
+					
 				}
 
 				if (localStorage["transactions"] != undefined && localStorage["transactions"] != "[]"){
@@ -143,7 +146,8 @@
 							$row = $("<tr>").append($("<td>").html(v["tr_folio"]),$("<td>").html(name),$("<td>").html(v["tr_pr_code"]),$("<td>").html(v["tr_net_weight"]));
 							$row.data("folio",v["tr_folio"]);
 							$row.click(function(){
-								openTransaction($(this).data("folio"));
+								openTransaction($(this).data("folio"), "transactions");
+								console.log($(this).data("folio"));
 							});
 							// Set the mouse to look like a pointer
 							$row.css("cursor","pointer");
@@ -169,7 +173,8 @@
 						$row = $("<tr>").append($("<td>").html(v["tr_folio"]),$("<td>").html(name),$("<td>").html(v["tr_pr_code"]),$("<td>").html(v["tr_net_weight"]));
 						$row.data("folio",v["tr_folio"]);
 						$row.click(function(){
-							openTransaction($(this).data("folio"));
+							openTransaction($(this).data("folio"), "log");
+							console.log($(this).data("folio"));
 						});
 						// Set the mouse to look like a pointer
 						$row.css("cursor","pointer");

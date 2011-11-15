@@ -1,202 +1,366 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8" />
+	<meta charset="utf-8">
+	<title>Recibo</title>
 	<link rel="stylesheet" href="../css/bootstrap/bootstrap.min.css">
 	<link rel="stylesheet" href="../css/ui-lightness/jquery-ui-1.8.16.custom.css">
 	<script src="../js/jquery-1.6.2.min.js"></script>
 	<script src="../js/jquery-ui-1.8.16.custom.min.js"></script>
-	<script src="../js/bootstrap-twipsy.js"></script>
-	<script src="../js/bootstrap-popover.js"></script>
 	<script src="../js/bootstrap-buttons.js"></script>
-	<script src="./action.js"></script>
 	<script src="./date.js"></script>
-<!--	<script type="text/javascript" 
-	src="../js/firebug-lite/firebug-lite.js">
-	{
-	    overrideConsole: true,
-	    startInNewWindow: false,
-	    startOpened: true,
-	    enableTrace: true
-	}
-	</script> -->
 	<script type="text/javascript">
+		$(document).ready(function(){
+			console.log("raincoat");
+			function fillSection(sectionid, list, size, length){
+				$.each(list, function(key,name){
+					$div = $("<div>").addClass("clearfix");
+					$label = $("<label>").attr("for",key);
+					$label.html(name);
+					$inputDiv = $("<div>").addClass("input");
+					$input = $("<input>").addClass(length);
+					$input.attr("id",key);
+					$input.attr("name",name);
+					$input.attr("size",size);
+					$input.attr("type","text");
+					// add savedb to the ones that should be saved
+					if(key != "tr_pr_name" && key != "pr_community"){
+						$input.addClass("savedb");
+					}
+					$inputDiv.append($input);
+					$div.append($label);
+					$div.append($inputDiv);
+					$(sectionid).append($div);
+				});
+			}
+			function createListsAndInputs(){
+				producerInfo = {"tr_pr_code":"Codigo","tr_pr_name":"Nombre","tr_date":"Fecha","pr_community":"Comite","tr_center":"Centro de Acopio","tr_time":"Hora De Entrega"};
+				fillSection("#producerFields", producerInfo, 30, "medium");
+				trInfo = {"tr_lot_num":"N Lote","tr_sack_num":"N Saco","tr_total_weight":"Peso Bruto","tr_tare":"Tara","tr_net_weight":"Peso Neto","tr_quality":"Calidad","tr_certification":"Clases"};
+				fillSection("#trFields", trInfo, 30, "mini");
+				qualityInfo = {"tr_quality_sf":"S/F","tr_quality_mordido":"Mordido","tr_quality_pelado":"Pelado","tr_quality_verde":"Verde","tr_quality_broca":"Broca","tr_quality_moho":"Moho","tr_quality_gqmd":"G. QMD","tr_quality_total":"Total"}
+				fillSection("#qualityFields", qualityInfo, 30, "mini");
+			}
+			createListsAndInputs();
+			function setUpAutocompletes(){
+				$("#tr_certification").autocomplete({
+					source: ["Organico", "Rainforest" ,"Convencional"]
+				});
+				$("#tr_quality").autocomplete({
+					source: ["P.A.H","P.A.M","P.A.O","P.A.S","S.A.H","S.A.M","B.A.H.B","B.A.M.B","F.A.V.V","P.A.H Moho","P.A.H S/F","P.A.H Mara"]
+				});
+				$("#tr_center").autocomplete({
+					source: ["COOMPROCOM","Wibuse","Ilipos","Rancho Grande","San Jose de los Remates"]
+				});
+			}
+			setUpAutocompletes();
+			function setUpDatePicker(){
+				// Set the datepicker and current date
+				$('#tr_date').datepicker({ defaultDate: +7 });
+				$('#tr_date').datepicker($.datepicker.regional['es']);
+				$('#tr_date').datepicker('setDate', "+0");
+			}
+			setUpDatePicker();
+			var online = 1;
+			function setUpLocalStorage(){
+				function setUpCenterAndCheckForPrice(){
+					if(localStorage['marketPrices'] != undefined){
+						if(JSON.parse(localStorage['marketPrices'])[myDate()] == undefined){
+							console.log("no price for today");
+							window.location = "dash.html";
+						}
+					}
+					else{
+						window.location = "dash.html";
+					}
+
+					if(localStorage["center"] == undefined){
+						localStorage["center"] = JSON.stringify("undefined");
+					};
+				}
+				setUpCenterAndCheckForPrice();
+				function setUpCenterId(){
+					var centerId = JSON.parse(localStorage["center"]);
+					// Set up an array to hold local transactions if there are any, and take new ones
+					trArray = [];
+					if (JSON.parse(localStorage['transactions'] != null)){
+						trArray = JSON.parse(localStorage['transactions']);
+					}
+					trLength = trArray.length;
+					// tell us how many transactions are stored locally
+					console.log(trLength + " transaction stored locally");
+					$("#storedTransactions").html(trLength);
+				}
+				setUpCenterId();
+				online = 1;
+				function setUpOnlineOrNot(){
+					//console.log("Online", online);
+					// Add a listener to tell us whether we are online or not
+					window.applicationCache.addEventListener("error", function(e) {
+						console.log("offline!");
+						$("#networkStatus").html("OFFLINE");
+						$("#tr_popover").toggleClass("success");
+						$("#tr_popover").toggleClass("danger");
+						online = 0;
+					});
+				}
+				setUpOnlineOrNot();
+				function setUpFolioNumbers(){
+					var centerId = JSON.parse(localStorage["center"]);
+					if(centerId == "rancho grande"){
+						folioStart = 0;
+					}
+					else if (centerId == "matagalpa"){
+						folioStart = 5000;
+					}
+					else{
+						folioStart = 10000;
+					}
+					// If there hasn't been a folio yet, set it to the start folio for this center
+					if(localStorage["nextFolio"] == undefined){
+						localStorage["nextFolio"] = folioStart;
+					}
+					currentFolio = localStorage["nextFolio"];
+					$("#tr_folio").html(currentFolio);
+				}
+				setUpFolioNumbers();
+			}
+			setUpLocalStorage();
+			function setUpSubmitButton(){
+				// Gather values from the form and submit to database
+				$('#submit').click(function(){
+					console.log("Online" + online);
+					data = {};
+					// Collect fields from html into data dictionary
+					$('.savedb').each(function(i){
+						if ($(this).val()){
+							data[$(this).attr("id")] = $(this).val();
+						}
+						else if($(this).html()){
+							data[$(this).attr("id")] = $(this).html();
+						}
+					});
+					console.log(data);
+					// Make sure there are enough fields here
+					if (data['tr_pr_code'] == undefined){
+						alert("Codigo Necesario");
+						console.log(data);
+						return 0;
+					}
+					else{
+						// De-activate submit button
+						$("#submit").button("loading");
+					}
+					// If not, ask to fill required fields
+					// Push that onto the list of transactions
+					console.log(data);
+					trArray.push(data);
+					// Update the localStorage list of transactions
+					localStorage['transactions'] = JSON.stringify(trArray);
+					// Replace the last saved transaction with this one for follow up page
+					localStorage['lastTransaction'] = JSON.stringify(data);
+					// Increment and save the folio number
+					localStorage['nextFolio'] = Number(localStorage['nextFolio']) + 1;
+					// Everything in order send to db if online
+					if(online){
+						$.post('./recieveLocalStorage.php',{'transactions' : JSON.parse(localStorage['transactions']), "center": JSON.parse(localStorage['center'])}, function(response){
+							console.log(response);
+							if(response == "success"){
+								// Store it in the log
+								console.log('Storing in log');
+								if (localStorage['log'] == undefined){
+									localStorage['log'] = JSON.stringify([data]);
+								}
+								else{
+									log = JSON.parse(localStorage['log']);
+									console.log('log before', log);
+									$.each(JSON.parse(localStorage['transactions']),function(i,v){
+										log.push(v);
+									});
+									console.log('log after', log);
+									localStorage['log'] = JSON.stringify(log);
+								}
+
+								console.log('clearing local storage');
+								// Save the folio and last transaction
+								/*nextFolio = localStorage['nextFolio'];
+								lastTr = JSON.parse(localStorage['lastTransaction']);
+								biglog = JSON.parse(localStorage['log']);
+								localStorage.clear();
+								trArray = [];
+								// Reset the necessary basiscs after clearing
+								localStorage['center'] = JSON.stringify(centerId);
+								localStorage['nextFolio'] = nextFolio;
+								localStorage['lastTransaction'] = JSON.stringify(lastTr);
+								localStorage['log'] = JSON.stringify(biglog);
+								*/
+								// clear offline 'transactions'
+								if (localStorage['transactions'] != undefined){
+									localStorage['transactions'] = JSON.stringify([]);
+								}
+							}
+							else if(response != undefined){
+								// Response failed, send an email to us and alert the user
+								alert("Error: " + response);
+								// Let them click ok, store the error, it has already been added to localStorage 'transactions' for offline storage, so send them to dashboard
+								if (localStorage["errorLog"] != undefined){
+									errorLog = JSON.parse(localStorage["errorLog"]);
+								}
+								else{
+									errorLog = [];
+								}
+								d = new Date();
+								errorLog.push({"message":response, "time": d});
+								localStorage["errorLog"] = JSON.stringify(errorLog); 
+							}
+							console.log('Changing Location');
+							console.log("Open new window");
+							window.open("imprimir.html", "Imprimir", "width=320,height=500");
+							window.location = "dash.html";
+						});
+					}
+					else{
+						console.log("offline switch");
+							window.open("imprimir.html", "Imprimir", "width=320,height=500");
+							window.location = "dash.html";
+					}
+				}); // End Submit Funtion	
+			}
+			setUpSubmitButton();
+			// Get the a list of producers and ids from the DB and store in producer_hash
+			// Also set up autcomplete with list of names and codes
+			function fillInForProducer(mode,val){
+				console.log("Fill in being called for " + mode + val);
+				// Use the name or the code to get the database id
+				var id;
+				if (mode == "name"){
+					id = producer_hash['nameToId'][val];
+				}
+				else if (mode == "code"){
+					id = producer_hash['codeToId'][val];
+				}
+				console.log(producer_hash, val);
+				// Get all the data for that producer
+				data = producer_hash['idToAll'][id];
+				// Set the values of the different html fields to that producer
+				$("#tr_pr_name").val(data["pr_name"]);
+				$("#tr_pr_code").val(data["pr_code"]);
+				$("#pr_community").val(data["pr_community"]);
+			}
+			var producer_hash = {};
+			$.getJSON('list.json',function(data){
+				// Build producer and code list
+				console.log("list",data);
+				producer_hash = data;
+				name_keys = [];
+				code_keys = [];
+				$.each(data["nameToId"], function(i, v){
+					name_keys.push(i);
+				});
+				$.each(data["codeToId"], function(i, v){
+					code_keys.push(i);
+				});
+				$( "#tr_pr_name" ).autocomplete({
+					source: name_keys,
+					close: function(event, ui) {
+						fillInForProducer('name', $('#tr_pr_name').val());
+					}
+				});
+				$( "#tr_pr_code" ).autocomplete({
+					source: code_keys,
+					close: function(event, ui) {
+						fillInForProducer('code', $('#tr_pr_code').val());
+					}
+				});
+		//				$.each(data,function(i,v){
+		//					console.log(v['pr_code']);
+		//				});
+
+				//console.log(data);
+			});
+
+		});
 	</script>
 </head>
 <body>
-	<!-- Start Overall Container -->
-	<div class="container span18">
-	<div id="logo-row" class="row span18">
-		<div class="span3">
-			<img src="../css/images/compcom_logo.png"/>
-		</div>
-		<div id="address" class="span12">
-			<ul style="list-style-type:none; text-align:center;">			
-				<li><strong>COOPERATIVA MULTISECTORIAL DE PRODUCTORES DE CAFE ORGANICO DE MATAGALPA</strong></li>
-				<li>Biblioteca del Banco Central 3 C. Este 20 Mts al Sur.   TEL: 2772 3486</li>
-				<li>&nbsp</li>
-				<li><strong>RECIBO DE CAFE ORGANICO 2011/2012</strong></li>
-				
-		</div>
-		<span id="networkStatus">ONLINE</span>
-					<a class="btn success" id="tr_popover" rel="popover">Enviar <span id="storedTransactions">-1</span> Recibos</a>
-	</div>
+<!--	<section id="logoSection">
+	</section> --><!-- logoSection -->
 	
-	
-	<div id="top-row" class="row span18">
-			<div id="row span18" style="margin-top:5px; margin-bottom 5px;">
-				<div class="span15">
-					<span class="label">INFORMACION DE PRODUCTOR</span>
-				</div>
-				<div class="span2">
-					FOLIO&deg;: <span id="tr_folio" name="tr_folio" class="label notice savedb" style="font-size:15px;">1234</span> 
+	<div class="container">
+		<div class="row">
+			<div class="span13 well" style="background-color:#E1EAF0">
+				<img src="../css/images/compcom_logo.png"/>
+				<div id="address" class="span9">
+					<ul style="list-style-type:none; text-align:center;">			
+						<li style="color:#404040"><strong>COOPERATIVA MULTISECTORIAL DE PRODUCTORES <br> DE CAFE ORGANICO DE MATAGALPA</strong></li>
+						<li style="color:#404040">Biblioteca del Banco Central 3 C. Este 20 Mts al Sur.   TEL: 2772 3486</li>
+						<li style="color:#404040"><strong>RECIBO DE CAFE 2011/2012</strong></li>
+					</ul>
 				</div>
 			</div>
-			<div id="producer-left" class="well span8">
-				<form>
-					<fieldset>
-						<label for="">PRODUCTOR</label>
-						<div class="input">
-							<input class="xlarge" id="tr_pr_name" name="tr_pr_name" size="30" type="text">
+		</div>
+	    <div class="sidebar">
+			<div class="span4" style="background-color:#BBD8E9">
+				<form action="" class="form-stacked">
+					<fieldset id="producerFields">
+						<span class="label success">Productor</span>
+						<div class="clearfix">
+							<label for="tr_folio">Folio</label>
+							<div class="input">
+								<span class="medium savedb uneditable-input" id="tr_folio" name="Folio" style="width:150px" size="30" type="text" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true"></span>
+							</div>
 						</div>
-						
-						<label for="pr_code">CODIGO</label>
-						<div class="input">
-							<input class="xlarge savedb" id="tr_pr_code" name="tr_pr_code" size="30" type="text">
-						</div>		
-					
-						<label for="tr_date">FECHA</label>
-						<div class="input">
-							<input class="xlarge savedb" id="tr_date" name="tr_date" size="30" type="text">
-						</div>		
 					</fieldset>
 				</form>
-			</div><!-- producer-left -->
-
-			<div id="producer-right"class="well span8">
-				<form>
-					<fieldset>
-						
-						<label for="pr_community">COMITE</label>
-						<div class="input">
-							<input class="xlarge" id="pr_community" name="pr_community" size="30" type="text">
-						</div>
-										
-						<label for="tr_center" >CENTRO DE ACOPIO</label>
-						<div class="input">
-							<input class="xlarge savedb" id="tr_center" name="tr_center" size="30" type="text">
-						</div>		
-						
-						<label for="tr_time">HORA DE ENTREGA</label>
-						<div class="input" id="datepicker">
-							<input class="xlarge savedb" id="tr_time" name="tr_time" size="30" type="text">
-						</div>		
-						
-					</fieldset>
-				</form>
-			</div><!-- producer-right -->
-		</div> <!-- top-row -->
+				</div>
+		</div><!-- sidebar -->
 		
-		<div id="middle-row" class="row span18">
-			<div id="weight-and-price" class="well span5">
-				<span class="label">PESO Y PRECIO</span>
-				<form>
-					<fieldset>
-							<label for="tr_lot_num">N&deg; LOTE</label>
-							<div class="input">
-								<input class="small savedb" id="tr_lot_num" name="tr_lot_num" size="30" type="text">
-							</div>
-							<label for="tr_sack_num">N&deg; SACO</label>
-							<div class="input">
-								<input class="small savedb" id="tr_sack_num" name="tr_sack_num" size="30" type="text">
-							</div>
-							<br>
-							<div class="well">
-								<span class="label">DETALLES DE PESO</span><br>
-								<label for="tr_total_weight">PESO BRUTO</label>
-								<div class="input">
-									<input class="mini savedb" id="tr_total_weight" name="tr_total_weight" size="30" type="text">
-								</div>
-								<label for="tr_tare">TARA</label>
-								<div class="input">
-									<input class="mini" id="tr_tare" name="Tare" size="30" type="text">
-								</div>		
-								<label for="tr_net_weight">PESO NETO</label>
-								<div class="input">
-									<input class="mini savedb" id="tr_net_weight" name="tr_net_weight" size="30" type="text">
-								</div>	
-							</div>
-							<label for="tr_quality">CALIDAD</label>
-							<div class="input">
-								<input class="small savedb" id="tr_quality" name="tr_quality" size="30" type="text">
-							</div>		
-					</fieldset>
-				</form>
-			</div><!-- weight and price -->
-			<div id="quality" class="well span5">
-				<span class="label">CALIDAD</span>
-				<form>
-					<fieldset>
-							<label for="tr_qualitysf">S/F</label>
-							<div class="input">
-								<input class="mini savedb" id="tr_quality_sf" name="tr_quality_sf" size="30" type="text">
-							</div>
-							<label for="tr_quality_mordido">MORDIDO</label>
-							<div class="input">
-								<input class="mini savedb" id="tr_quality_mordido" name="tr_quality_mordido" size="30" type="text">
-							</div>		
-							<label for="tr_quality_pelado">PELADO</label>
-							<div class="input">
-								<input class="mini savedb" id="tr_quality_pelado" name="tr_quality_pelado" size="30" type="text">
-							</div>
-							<label for="tr_quality_verde">VERDE</label>
-							<div class="input">
-								<input class="mini savedb" id="tr_quality_verde" name="tr_quality_verde" size="30" type="text">
-							</div>
-							<label for="tr_quality_broca">BROCA</label>
-							<div class="input">
-								<input class="mini savedb" id="tr_quality_broca" name="tr_quality_broca" size="30" type="text">
-							</div>
-							<label for="tr_quality_moho">MOHO</label>
-							<div class="input">
-								<input class="mini savedb" id="tr_quality_moho" name="tr_quality_moho" size="30" type="text">
-							</div>
-							<label for="tr_quality_gqmd">G. QMD</label>
-							<div class="input">
-								<input class="mini savedb" id="tr_quality_gqmd" name="tr_quality_gqmd" size="30" type="text">
-							</div>
-							<label for="tr_quality_total">TOTAL</label>
-							<div class="input">
-								<input class="mini savedb" id="tr_quality_total" name="tr_quality_total" size="30" type="text">
-							</div>	
-					</fieldset>
-				</form>
-			</div><!-- quality -->
-			<div id="observations" class="well span5">
-				<span class="label">OBSERVACIONES</span><br>
-				<label for="tr_observations">OBSERVACIONES</label>
-				<div class="input">
-					<textarea class="span5 savedb" id="tr_observations" name="tr_observations" rows="9"></textarea>
-				</div>
-				<label for="tr_reciever">RECIBIDO POR:</label>
-				<div class="input">
-					<input class="xlarge savedb" id="tr_reciever" name="tr_reciever" type="text" size="30"></textarea>
-				</div>
-			</div><!-- observations -->
-		</div> <!-- middle-row -->
-		
-		<div id="bottom-row" class="row span18">
-			<div id="signature" class="well span15">
-				<div id="sign" class="input large span-two-thirds">
-					<label for="sign-here" style="width:150px;">ENTREGUE CONFIRME</label>
-					<input class="xlarge span8" style="border-bottom-color: black;">
-				</div>
-				<div id="actions" class="span3">
-					<button name="submit" class="btn large success" data-loading-text="Por Favor Espere..." id="submit" type="reset">ENVIAR</button>
-				</div>
-			</div>
-		</div> <!-- bottom-row -->
-		
-	</div> <!-- container -->
+		<div class="content">
+			<div class="span9" style="background-color:#DCEAF4">
+				<div class="row">
+					<div class="span2">
+						<section id="trInformationSection">
+							<form action="" class="form-stacked">
+								<fieldset id="trFields">
+									<span class="label success">Peso</span>
+								</fieldset>
+							</form>
+						</section><!-- trInformationSection -->
+					</div><!-- span3 -->
+					<div class="span2">
+						<section id="qualitySection">
+							<form action="" class="form-stacked">
+								<fieldset id="qualityFields">
+									<span class="label success">Calidad</span>
+								</fieldset>
+							</form>
+						</section><!-- qualitySection -->
+					</div><!-- span3 -->
+					<div class="span4">
+						<form action="" class="form-stacked">
+							<fieldset id="trFields">
+								<span class="label success" syle="font-size:13px">Observaciones</span>
+								<div class="clearfix">
+									<div class="input">
+										<label for="tr_observations">Observaciones</label>
+										<textarea class="savedb" id="tr_observations" name="Observaciones" rows="9"></textarea>
+									</div>
+								</div><!-- clearfix -->
+								<div class="clearfix">
+									<div class="input">
+										<label for="tr_receiver">Recibido Por</label>
+										<input class="savedb" id="tr_receiver" name="Recibido Por"></input>
+									</div>
+								</div><!-- clearfix -->
+							</fieldset>
+							<button type="submit" class="btn primary" id="submit">Enviar</button>
+						<form>
+					</div><!-- span6 -->
+				</div><!-- row -->
+		<!--		<div class="actions">
+					<button type="submit" class="btn primary">Save changes</button>&nbsp;<button type="reset" class="btn">Cancel</button>
+				</div> -->
+			</div><!-- span12 -- >
+		</div><!-- content -->
 </body>
 </html>
