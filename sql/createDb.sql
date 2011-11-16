@@ -32,7 +32,8 @@ CREATE TABLE transaction(
 	tr_quality_total TINYINT,
 	tr_observations VARCHAR(40),
 	tr_receiver VARCHAR(40),
-	tr_certification VARCHAR(40)
+	tr_certification VARCHAR(40),
+	tr_type VARCHAR(40)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;  
 
 LOAD DATA LOCAL INFILE 'producerlist.csv' 
