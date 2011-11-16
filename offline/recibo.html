@@ -9,6 +9,7 @@
 	<script src="../js/jquery-ui-1.8.16.custom.min.js"></script>
 	<script src="../js/bootstrap-buttons.js"></script>
 	<script src="./date.js"></script>
+	<script src="../js/jquery.ui.datepicker-es.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
 			console.log("raincoat");
@@ -34,7 +35,7 @@
 				});
 			}
 			function createListsAndInputs(){
-				producerInfo = {"tr_pr_code":"Codigo","tr_pr_name":"Nombre","tr_date":"Fecha","pr_community":"Comite","tr_center":"Centro de Acopio","tr_time":"Hora De Entrega"};
+				producerInfo = {"tr_pr_name":"Nombre","tr_pr_code":"Codigo","pr_community":"Comite","tr_date":"Fecha","tr_center":"Centro de Acopio","tr_time":"Hora De Entrega"};
 				fillSection("#producerFields", producerInfo, 30, "medium");
 				trInfo = {"tr_lot_num":"N Lote","tr_sack_num":"N Saco","tr_total_weight":"Peso Bruto","tr_tare":"Tara","tr_net_weight":"Peso Neto","tr_quality":"Calidad","tr_certification":"Clases"};
 				fillSection("#trFields", trInfo, 30, "mini");
@@ -61,12 +62,24 @@
 				}
 				$("#tr_time").val(hours+":"+minutes);
 				
+				// Set up summation of imperfections
+				$("#qualityFields").bind("keyup",function(){
+					sum = 0;
+					$.each($("#qualityFields input"),function(i,v){
+						if ($(v).attr("id") !="tr_quality_total"){
+							if($(v).val()){
+								sum += Number($(v).val());
+							}
+						}
+					});
+					$("#tr_quality_total").val(sum);
+				});
 			}
 			setUpAutocompletes();
 			function setUpDatePicker(){
 				// Set the datepicker and current date
 				$('#tr_date').datepicker({ defaultDate: +7 });
-				$('#tr_date').datepicker($.datepicker.regional['es']);
+				$( "#tr_date" ).datepicker( $.datepicker.regional[ "es" ] );
 				$('#tr_date').datepicker('setDate', "+0");
 			}
 			setUpDatePicker();
@@ -259,7 +272,6 @@
 			var producer_hash = {};
 			$.getJSON('list.json',function(data){
 				// Build producer and code list
-				console.log("list",data);
 				producer_hash = data;
 				name_keys = [];
 				code_keys = [];
@@ -281,13 +293,7 @@
 						fillInForProducer('code', $('#tr_pr_code').val());
 					}
 				});
-		//				$.each(data,function(i,v){
-		//					console.log(v['pr_code']);
-		//				});
-
-				//console.log(data);
 			});
-
 		});
 	</script>
 </head>
@@ -314,7 +320,7 @@
 					<fieldset id="producerFields">
 						<span class="label success">Productor</span>
 						<div class="clearfix">
-							<label for="tr_folio">Folio</label>
+							<label for="tr_folio">N Recibo</label>
 							<div class="input">
 								<span class="medium savedb uneditable-input" id="tr_folio" name="Folio" style="width:150px" size="30" type="text" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true"></span>
 							</div>
@@ -340,7 +346,7 @@
 						<section id="qualitySection">
 							<form action="" class="form-stacked">
 								<fieldset id="qualityFields">
-									<span class="label success">Calidad</span>
+									<span class="label success">Imperfecciones</span>
 								</fieldset>
 							</form>
 						</section><!-- qualitySection -->
@@ -353,6 +359,22 @@
 									<div class="input">
 										<label for="tr_observations">Observaciones</label>
 										<textarea class="savedb" id="tr_observations" name="Observaciones" rows="9"></textarea>
+									</div>
+								</div><!-- clearfix -->
+								<div class="clearfix">
+									<div class="input">
+										<label for="tr_type">Forma De Entrega</label>
+										<select class="savedb" id="tr_type" name="Forma De Entrega">
+											<option>Entrega</option>
+											<option>Compra</option>
+											<!-- If it is entrega, we need to get precio de referencia. For compra precio fijo -->
+										</select>
+									</div>
+								</div><!-- clearfix -->
+								<div class="clearfix">
+									<div class="input">
+										<label for="tr_price">Precio Por QQ</label>
+										<input class="savedb" id="tr_price" name="Recibido Por"></input>
 									</div>
 								</div><!-- clearfix -->
 								<div class="clearfix">
