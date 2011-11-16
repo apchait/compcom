@@ -33,7 +33,9 @@ CREATE TABLE transaction(
 	tr_observations VARCHAR(40),
 	tr_receiver VARCHAR(40),
 	tr_certification VARCHAR(40),
-	tr_type VARCHAR(40)
+	tr_type VARCHAR(40),
+	tr_price_reference DECIMAL(10,4),
+	tr_price_fixed DECIMAL(10,4)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;  
 
 LOAD DATA LOCAL INFILE 'producerlist.csv' 
