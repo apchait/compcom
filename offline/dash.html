@@ -22,7 +22,7 @@
 				});
 				
 				// New style with Fallback in manifest
-				applicationCache.onUpdateReady = function(){
+		/*		applicationCache.onUpdateReady = function(){
 					// Cache manifest has changed, alert and reload
 					if(confirm("Do you want to reload?")){
 						window.location.reload();
@@ -50,11 +50,11 @@
 							console.log("Crazy Offline");
 						}
 					});
-				}
+				}*/
 			}
-		//	setUpCacheUpdateReload();
+			setUpCacheUpdateReload();
 			
-			// Get the center id
+			/*// Get the center id
 			function setUpCenter(){
 				if (localStorage["center"] != undefined){
 					center = JSON.parse(localStorage["center"]);
@@ -67,7 +67,7 @@
 				$("#center").html(center);
 				console.log("center", center);
 			}
-			setUpCenter();
+			//setUpCenter();*/
 
 			function setUpMarketPriceModal(){
 				if (localStorage['marketPrices'] != undefined){
@@ -116,7 +116,7 @@
 					return false;
 				});
 			}
-			setUpMarketPriceModal();
+			//setUpMarketPriceModal();
 				
 			function setUpTables(){
 				function openTransaction(folioNum,mode){
@@ -259,7 +259,7 @@
 
 	      <!-- Main hero unit for a primary marketing message or call to action -->
 	      <div class="hero-unit">
-	        <h1>Hola, <span id="center"></span>!</h1>
+	        <h1>Hola, Acopio Movil!</h1>
 	        <p>Beinvendio al sistema Acopio Movil de COOMPROCOM.</p>
 	        <p><a href="recepcion.html" class="btn primary large">Nueva Recepcion »</a>&nbsp;<a class="btn primary large">Nueva Remision »</a>&nbsp;<a class="btn primary large">Nueva Liquidacion »</a></p>
 	      </div>

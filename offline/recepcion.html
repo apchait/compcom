@@ -133,12 +133,12 @@
 					}
 
 					if(localStorage["center"] == undefined){
-						localStorage["center"] = JSON.stringify("undefined");
+						localStorage["center"] = JSON.stringify("Acopio Movil");
 					};
 				}
-				setUpCenterAndCheckForPrice();
+				//setUpCenterAndCheckForPrice();
 				function setUpCenterId(){
-					var centerId = JSON.parse(localStorage["center"]);
+					//var centerId = JSON.parse(localStorage["center"]);
 					// Set up an array to hold local transactions if there are any, and take new ones
 					trArray = [];
 					if (JSON.parse(localStorage['transactions'] != null)){
@@ -146,8 +146,8 @@
 					}
 					trLength = trArray.length;
 					// tell us how many transactions are stored locally
-					console.log(trLength + " transaction stored locally");
-					$("#storedTransactions").html(trLength);
+					//console.log(trLength + " transaction stored locally");
+					//$("#storedTransactions").html(trLength);
 				}
 				setUpCenterId();
 				online = 1;
@@ -217,7 +217,7 @@
 					// Replace the last saved transaction with this one for follow up page
 					localStorage['lastTransaction'] = JSON.stringify(data);
 					// Increment and save the folio number
-					localStorage['nextFolio'] = Number(localStorage['nextFolio']) + 1;
+					//localStorage['nextFolio'] = Number(localStorage['nextFolio']) + 1;
 					// Everything in order send to db if online
 					if(online){
 						$.post('./recieveLocalStorage.php',{'transactions' : JSON.parse(localStorage['transactions']), "center": JSON.parse(localStorage['center'])}, function(response){
