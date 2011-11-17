@@ -9,6 +9,11 @@ CACHE MANIFEST
 ./action.js
 ./list.json
 ./date.js
+./centros/chocolata.html
+./centros/comprocoom.html
+./centros/sanjosedelosremates.html
+./centros/wibuse.html
+./centros/ranchogrande.html
 ../php/connect.php
 ../css/bootstrap/bootstrap.min.css
 ../js/firebug-lite/firebug-lite.js
