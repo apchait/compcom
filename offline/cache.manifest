@@ -6,7 +6,6 @@ CACHE MANIFEST
 ./recieveLocalStorage.php
 ./codeToName.js
 ./dash.js
-./action.js
 ./list.json
 ./date.js
 ./centros/chocolata.html
@@ -20,8 +19,6 @@ CACHE MANIFEST
 ../js/jquery-1.6.2.min.js
 ../js/jquery-ui-1.8.16.custom.min.js
 ../js/jquery.ui.datepicker-es.js
-../js/bootstrap-twipsy.js
-../js/bootstrap-popover.js
 ../js/bootstrap-buttons.js
 ../js/bootstrap-modal.js
 ../css/images/compcom_logo.png
@@ -44,6 +41,3 @@ CACHE MANIFEST
 
 NETWORK:
 ./matagalpa.html
-
-FALLBACK:
-../js/online.js ../js/offline.js
