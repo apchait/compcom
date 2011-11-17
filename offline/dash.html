@@ -140,9 +140,9 @@
 					$.each(trs,function(i,v){
 						console.log('In Trs');
 						console.log(trs);
-						codeToName(v["tr_pr_code"],function(name){
+					//	codeToName(v["tr_pr_code"],function(name){
 							$a = $("<a>");
-							$row = $("<tr>").append($("<td>").html(v["tr_folio"]),$("<td>").html(name),$("<td>").html(v["tr_pr_code"]),$("<td>").html(v["tr_net_weight"]));
+							$row = $("<tr>").append($("<td>").html(v["tr_folio"]),$("<td>").html(v["tr_pr_name"]),$("<td>").html(v["tr_pr_code"]),$("<td>").html(v["tr_net_weight"]));
 							$row.data("folio",v["tr_folio"]);
 							$row.click(function(){
 								openTransaction($(this).data("folio"), "transactions");
@@ -151,7 +151,7 @@
 							// Set the mouse to look like a pointer
 							$row.css("cursor","pointer");
 							$table1.append($row);
-						});
+						//});
 					});
 				}
 				else{
@@ -167,9 +167,9 @@
 				}
 				$table2 = $("#logTable");
 				$.each(log,function(i,v){
-					codeToName(v["tr_pr_code"],function(name){
+					//codeToName(v["tr_pr_code"],function(name){
 						$a = $("<a>");
-						$row = $("<tr>").append($("<td>").html(v["tr_folio"]),$("<td>").html(name),$("<td>").html(v["tr_pr_code"]),$("<td>").html(v["tr_net_weight"]));
+						$row = $("<tr>").append($("<td>").html(v["tr_folio"]),$("<td>").html(v["tr_pr_name"]),$("<td>").html(v["tr_pr_code"]),$("<td>").html(v["tr_net_weight"]));
 						$row.data("folio",v["tr_folio"]);
 						$row.click(function(){
 							openTransaction($(this).data("folio"), "log");
@@ -178,7 +178,7 @@
 						// Set the mouse to look like a pointer
 						$row.css("cursor","pointer");
 						$table2.append($row);
-					});
+					//});
 				});
 			}
 			setUpTables();
@@ -187,13 +187,14 @@
 					$('#sendReceipts').click(function(){
 						online = 1;
 						if(online){
-							$.post('./recieveLocalStorage.php',{'transactions' : JSON.parse(localStorage['transactions']), "center": JSON.parse(localStorage['center'])}, function(response){
+							$.post('./recieveLocalStorage.php',{'transactions' : JSON.parse(localStorage['transactions'])}, function(response){
 								console.log(response);
 								if(response == "success"){
 									// Store it in the log
 									console.log('Storing in log');
 									if (localStorage['log'] == undefined){
-										localStorage['log'] = JSON.stringify([data]);
+										//localStorage['log'] = JSON.stringify([data]);
+										localStorage['log'] = localStorage['transactions'];
 									}
 									else{
 										log = JSON.parse(localStorage['log']);
@@ -206,18 +207,6 @@
 									}
 
 									console.log('clearing local storage');
-									// Save the folio and last transaction
-									/*nextFolio = localStorage['nextFolio'];
-									lastTr = JSON.parse(localStorage['lastTransaction']);
-									biglog = JSON.parse(localStorage['log']);
-									localStorage.clear();
-									trArray = [];
-									// Reset the necessary basiscs after clearing
-									localStorage['center'] = JSON.stringify(centerId);
-									localStorage['nextFolio'] = nextFolio;
-									localStorage['lastTransaction'] = JSON.stringify(lastTr);
-									localStorage['log'] = JSON.stringify(biglog);
-									*/
 									// clear offline 'transactions'
 									if (localStorage['transactions'] != undefined){
 										localStorage['transactions'] = JSON.stringify([]);
@@ -248,9 +237,9 @@
 								//window.open("imprimir.html", "Imprimir", "width=320,height=500");
 								window.location = "dash.html";
 						}
-					}); // End Submit Funtion	
+					}); // End Submit Funtion
 				}
-			setUpSubmitButton();
+					setUpSubmitButton();
 		});
 	</script>
 </head>
@@ -303,7 +292,7 @@
 	<table class="zebra-striped" id="logTable">
 	    <thead>
 	        <tr>
-	            <th class="header">Folio #</th>
+	            <th class="header">N Recibo</th>
 	            <th class="header headerSortDown">Nombre</th>
 	            <th class="header">Codigo</th>
 	            <th class="header">Peso Neto</th>

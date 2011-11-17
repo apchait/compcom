@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# rev 240
+# rev 246
 ./dash.html
 ./recepcion.html
 ./imprimir.html
@@ -8,11 +8,6 @@ CACHE MANIFEST
 ./dash.js
 ./list.json
 ./date.js
-./centros/chocolata.html
-./centros/comprocoom.html
-./centros/sanjosedelosremates.html
-./centros/wibuse.html
-./centros/ranchogrande.html
 ../php/connect.php
 ../css/bootstrap/bootstrap.min.css
 ../js/firebug-lite/firebug-lite.js

@@ -35,7 +35,7 @@
 					$input.attr("id",key);
 					$input.attr("name",name);
 					// add savedb to the ones that should be saved
-					if(key != "tr_pr_name" && key != "pr_community"){
+					if(key != "pr_community"){
 						$input.addClass("savedb");
 					}
 					$inputDiv.append($input);
@@ -120,7 +120,19 @@
 			}
 			setUpDatePicker();
 			var online = 1;
-			function setUpLocalStorage(){
+			function setUpOnlineOrNot(){
+				//console.log("Online", online);
+				// Add a listener to tell us whether we are online or not
+				window.applicationCache.addEventListener("error", function(e) {
+					console.log("offline!");
+					$("#networkStatus").html("OFFLINE");
+					$("#tr_popover").toggleClass("success");
+					$("#tr_popover").toggleClass("danger");
+					online = 0;
+				});
+			}
+			setUpOnlineOrNot();
+		/*	function setUpLocalStorage(){
 				function setUpCenterAndCheckForPrice(){
 					if(localStorage['marketPrices'] != undefined){
 						if(JSON.parse(localStorage['marketPrices'])[myDate()] == undefined){
@@ -150,18 +162,6 @@
 					//$("#storedTransactions").html(trLength);
 				}
 				setUpCenterId();
-				online = 1;
-				function setUpOnlineOrNot(){
-					//console.log("Online", online);
-					// Add a listener to tell us whether we are online or not
-					window.applicationCache.addEventListener("error", function(e) {
-						console.log("offline!");
-						$("#networkStatus").html("OFFLINE");
-						$("#tr_popover").toggleClass("success");
-						$("#tr_popover").toggleClass("danger");
-						online = 0;
-					});
-				}
 				setUpOnlineOrNot();
 				function setUpFolioNumbers(){
 					var centerId = JSON.parse(localStorage["center"]);
@@ -181,13 +181,13 @@
 					currentFolio = localStorage["nextFolio"];
 					$("#tr_folio").html(currentFolio);
 				}
-			//	setUpFolioNumbers();
+				setUpFolioNumbers();
 			}
-			setUpLocalStorage();
+			//setUpLocalStorage();*/
 			function setUpSubmitButton(){
 				// Gather values from the form and submit to database
 				$('#submit').click(function(){
-					console.log("Online" + online);
+					console.log("Online " + online);
 					data = {};
 					// Collect fields from html into data dictionary
 					$('.savedb').each(function(i){
@@ -207,10 +207,13 @@
 					}
 					else{
 						// De-activate submit button
-						$("#submit").button("loading");
+						//$("#submit").button("loading");
 					}
-					// If not, ask to fill required fields
 					// Push that onto the list of transactions
+					trArray = [];
+					if (JSON.parse(localStorage['transactions'] != null)){
+						trArray = JSON.parse(localStorage['transactions']);
+					}
 					trArray.push(data);
 					// Update the localStorage list of transactions
 					localStorage['transactions'] = JSON.stringify(trArray);
@@ -220,13 +223,14 @@
 					//localStorage['nextFolio'] = Number(localStorage['nextFolio']) + 1;
 					// Everything in order send to db if online
 					if(online){
-						$.post('./recieveLocalStorage.php',{'transactions' : JSON.parse(localStorage['transactions']), "center": JSON.parse(localStorage['center'])}, function(response){
+						$.post('./recieveLocalStorage.php',{'transactions' : JSON.parse(localStorage['transactions'])}, function(response){
 							console.log(response);
 							if(response == "success"){
 								// Store it in the log
 								console.log('Storing in log');
 								if (localStorage['log'] == undefined){
-									localStorage['log'] = JSON.stringify([data]);
+									//localStorage['log'] = JSON.stringify([data]);
+									localStorage['log'] = localStorage['transactions'];
 								}
 								else{
 									log = JSON.parse(localStorage['log']);
@@ -328,6 +332,10 @@
 						fillInForProducer('code', $('#tr_pr_code').val());
 					}
 				});
+			});
+
+			$("form").submit(function(){
+				return false;
 			});
 		});
 	</script>
