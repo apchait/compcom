@@ -74,6 +74,32 @@
 					});
 					$("#tr_quality_total").val(sum);
 				});
+				
+				// Set the selection of type to change the price from reference to fixed
+				$("#tr_type").change(function(){
+					$("#tr_price_input").remove();
+					$div = $("<div>").attr("class","input");
+					$div.attr("id","tr_price_input");
+					if ($(this).val() == "Compra"){
+						$label = $("<label>Precio Fijo</label>");
+						$div.append($label);
+						$input = $("<input>");
+						$input.attr("id","tr_price_fixed");
+						$input.attr("name","Precio Fijo");
+						$input.attr("class","savedb");
+						$div.append($input);
+					}
+					else{
+						$label = $("<label>Precio de Referncia</label>");
+						$div.append($label);
+						$input = $("<input>");
+						$input.attr("id","tr_price_reference");
+						$input.attr("name","Precio de Referencia");
+						$input.attr("class","savedb");
+						$div.append($input);
+					}
+					$("#tr_price_clearfix").append($div);
+				});
 			}
 			setUpAutocompletes();
 			function setUpDatePicker(){
@@ -371,10 +397,10 @@
 										</select>
 									</div>
 								</div><!-- clearfix -->
-								<div class="clearfix">
-									<div class="input">
-										<label for="tr_price">Precio Por QQ</label>
-										<input class="savedb" id="tr_price" name="Recibido Por"></input>
+								<div class="clearfix" id="tr_price_clearfix">
+									<div class="input" id="tr_price_input">
+										<label for="tr_price_reference">Precio de Referencia</label>
+										<input class="savedb" id="tr_price_referece" name="Precio de Referencia"></input>
 									</div>
 								</div><!-- clearfix -->
 								<div class="clearfix">
