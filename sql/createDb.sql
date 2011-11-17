@@ -18,9 +18,9 @@ CREATE TABLE transaction(
 	tr_time VARCHAR(40),
 	tr_lot_num SMALLINT,
 	tr_sack_num SMALLINT,
-	tr_total_weight DECIMAL(10,4),
-	tr_tare DECIMAL(10,4),
-	tr_net_weight DECIMAL(10,4),
+	tr_total_weight DECIMAL(10,2),
+	tr_tare DECIMAL(10,2),
+	tr_net_weight DECIMAL(10,2),
 	tr_quality VARCHAR(40),
 	tr_quality_sf TINYINT,
 	tr_quality_mordido TINYINT,
@@ -34,8 +34,8 @@ CREATE TABLE transaction(
 	tr_receiver VARCHAR(40),
 	tr_certification VARCHAR(40),
 	tr_type VARCHAR(40),
-	tr_price_reference DECIMAL(10,4),
-	tr_price_fixed DECIMAL(10,4)
+	tr_price_reference DECIMAL(10,2),
+	tr_price_fixed DECIMAL(10,2)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;  
 
 LOAD DATA LOCAL INFILE 'producerlist.csv' 

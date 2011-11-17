@@ -19,11 +19,21 @@
 					$label = $("<label>").attr("for",key);
 					$label.html(name);
 					$inputDiv = $("<div>").addClass("input");
-					$input = $("<input>").addClass(length);
+					if (key != "tr_center"){
+						$input = $("<input>").addClass(length);
+						$input.attr("size",size);
+						$input.attr("type","text");
+					}
+					else{
+						$input = $("<select>");
+						$.each(["COMPROCOOM", "San Jose de Los Remates", "Rancho Grande", "Wibuse", "La Chocolata"], function(i,v){
+							$option = $("<option>").html(v);
+							$input.append($option);
+							$input.css("width","160px");
+						});
+					}
 					$input.attr("id",key);
 					$input.attr("name",name);
-					$input.attr("size",size);
-					$input.attr("type","text");
 					// add savedb to the ones that should be saved
 					if(key != "tr_pr_name" && key != "pr_community"){
 						$input.addClass("savedb");
@@ -37,7 +47,7 @@
 			function createListsAndInputs(){
 				producerInfo = {"tr_pr_name":"Nombre","tr_pr_code":"Codigo","pr_community":"Comite","tr_date":"Fecha","tr_center":"Centro de Acopio","tr_time":"Hora De Entrega"};
 				fillSection("#producerFields", producerInfo, 30, "medium");
-				trInfo = {"tr_lot_num":"N Lote","tr_sack_num":"N Saco","tr_total_weight":"Peso Bruto","tr_tare":"Tara","tr_net_weight":"Peso Neto","tr_quality":"Calidad","tr_certification":"Clases"};
+				trInfo = {"tr_lot_num":"N Lote","tr_folio":"N Recibo","tr_sack_num":"N Saco","tr_total_weight":"Peso Bruto","tr_tare":"Tara","tr_net_weight":"Peso Neto","tr_quality":"Calidad","tr_certification":"Clases"};
 				fillSection("#trFields", trInfo, 30, "mini");
 				qualityInfo = {"tr_quality_sf":"S/F","tr_quality_mordido":"Mordido","tr_quality_pelado":"Pelado","tr_quality_verde":"Verde","tr_quality_broca":"Broca","tr_quality_moho":"Moho","tr_quality_gqmd":"G. QMD","tr_quality_total":"Total"}
 				fillSection("#qualityFields", qualityInfo, 30, "mini");
@@ -50,9 +60,9 @@
 				$("#tr_quality").autocomplete({
 					source: ["P.A.H","P.A.M","P.A.O","P.A.S","S.A.H","S.A.M","B.A.H.B","B.A.M.B","F.A.V.V","P.A.H Moho","P.A.H S/F","P.A.H Mara"]
 				});
-				$("#tr_center").autocomplete({
-					source: ["COOMPROCOM","Wibuse","Ilipos","Rancho Grande","San Jose de los Remates"]
-				});
+		//		$("#tr_center").autocomplete({
+		//			source: ["COOMPROCOM","Wibuse","Ilipos","Rancho Grande","San Jose de los Remates"]
+		//		});
 				// Set up time
 				var currentTime = new Date()
 				var hours = currentTime.getHours()
@@ -171,7 +181,7 @@
 					currentFolio = localStorage["nextFolio"];
 					$("#tr_folio").html(currentFolio);
 				}
-				setUpFolioNumbers();
+			//	setUpFolioNumbers();
 			}
 			setUpLocalStorage();
 			function setUpSubmitButton(){
@@ -190,8 +200,8 @@
 					});
 					console.log(data);
 					// Make sure there are enough fields here
-					if (data['tr_pr_code'] == undefined){
-						alert("Codigo Necesario");
+					if(data["tr_folio"]== undefined){
+						alert("N Recibo Necesario");
 						console.log(data);
 						return 0;
 					}
@@ -201,7 +211,6 @@
 					}
 					// If not, ask to fill required fields
 					// Push that onto the list of transactions
-					console.log(data);
 					trArray.push(data);
 					// Update the localStorage list of transactions
 					localStorage['transactions'] = JSON.stringify(trArray);
@@ -345,12 +354,6 @@
 				<form action="" class="form-stacked">
 					<fieldset id="producerFields">
 						<span class="label success">Productor</span>
-						<div class="clearfix">
-							<label for="tr_folio">N Recibo</label>
-							<div class="input">
-								<span class="medium savedb uneditable-input" id="tr_folio" name="Folio" style="width:150px" size="30" type="text" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true"></span>
-							</div>
-						</div>
 					</fieldset>
 				</form>
 				</div>
@@ -400,7 +403,7 @@
 								<div class="clearfix" id="tr_price_clearfix">
 									<div class="input" id="tr_price_input">
 										<label for="tr_price_reference">Precio de Referencia</label>
-										<input class="savedb" id="tr_price_referece" name="Precio de Referencia"></input>
+										<input class="savedb" id="tr_price_reference" name="Precio de Referencia"></input>
 									</div>
 								</div><!-- clearfix -->
 								<div class="clearfix">
