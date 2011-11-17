@@ -15,11 +15,11 @@
 			
 			function setUpCacheUpdateReload(){
 				// Old style with error indicating offline or not
-				window.applicationCache.addEventListener("downloading",function(){
-					if(confirm("Do you want to reload?")){
-						window.location.reload();
-					}
-				});
+			//	window.applicationCache.addEventListener("downloading",function(){
+			//		if(confirm("Do you want to reload?")){
+			//			window.location.reload();
+			//		}
+			//	});
 				
 				// New style with Fallback in manifest
 		/*		applicationCache.onUpdateReady = function(){
