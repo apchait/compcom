@@ -47,6 +47,10 @@
 			});
 			$table1.tablesorter({ sortList: [[1,0]] });
 		});
+		
+		$("#excel").click(function(){
+			window.location = "../php/export/exportAll.php", "Excel", "width=0,height=0";
+		});
 	});
 	</script>
 </head>
@@ -61,7 +65,7 @@
       </div>
 
 <section id="trTableSection">
-<h2>Recibos Guardados <small>en la base de datos central</small></h2>
+<h2>Recibos Guardados <small>en la base de datos central</small>     <button id="excel" class="btn success">Guardar Excel</button></h2>
 <p>Estos recibos no se han enviados a la base de datos central<br>
 Haga clic en una transacción para ver los detalles</p>
 <!-- TableSorter -->

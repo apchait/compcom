@@ -1,12 +1,14 @@
 <?php
 
-include("./php/connect.php");
+include('../connect.php');	
 $link = connectToDb();
-
+$query = "SELECT * FROM transaction";
+$export = runQuery($link,$query);
+/*
 $select = "SELECT * FROM transaction";
 
 $export = mysql_query ( $select, $link ) or die ( "Sql error : " . mysql_error( ) );
-
+*/
 $fields = mysql_num_fields ( $export );
 
 for ( $i = 0; $i < $fields; $i++ )
@@ -40,7 +42,7 @@ if ( $data == "" )
 }
 
 header("Content-type: application/octet-stream");
-header("Content-Disposition: attachment; filename=tlist.xls");
+header("Content-Disposition: attachment; filename=Listado de Recibos.xls");
 header("Pragma: no-cache");
 header("Expires: 0");
 print "$header\n$data";
