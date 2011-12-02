@@ -13,6 +13,7 @@
 			lastTr = JSON.parse(localStorage["lastTransaction"]);
 			console.log(lastTr);
 			$.getJSON('list.json',function(data){
+				console.log("got list");
 				// Get producer name
 			//	id = data["codeToId"][lastTr["tr_pr_code"]];
 			//	name = data["idToAll"][id]["pr_name"];
@@ -21,7 +22,7 @@
 				$tbl.attr('class', 'zebra-striped');
 				$tbl.css('width', '300px','font-size','10px');
 				// First add the name
-				$tbl.append($('<tr>').append($('<td>').text("NOMBRE"), $('<td>').text(name)));
+				//$tbl.append($('<tr>').append($('<td>').text("NOMBRE"), $('<td>').text(name)));
 				$.each(lastTr, function(i,v){
 					$tbl.append($('<tr>').append($('<td>').text(dict[i]), $('<td>').text(v)));
 				});
@@ -34,7 +35,7 @@
 <body>
 	<div class="row">
 		<div class="span3">
-			<button class="btn" onClick="window.print()" style="right:10px">Imprimir</button>
+			<!-- <button class="btn" onClick="window.print()" style="right:10px">Imprimir</button> -->
 		</div>
 	</div>
 	<div class="row">
